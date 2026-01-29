@@ -180,14 +180,14 @@
             <div class="size-grid">
               <button class="size-btn" data-width="1.5" data-height="0.5"><span class="size-btn-label">Small</span><span class="size-btn-dims">1.5" × 0.5"</span></button>
               <button class="size-btn" data-width="2.5" data-height="0.75"><span class="size-btn-label">Medium</span><span class="size-btn-dims">2.5" × 0.75"</span></button>
-              <button class="size-btn active" data-width="4" data-height="1"><span class="size-btn-label">Standard</span><span class="size-btn-dims">4" × 1"</span></button>
+              <button class="size-btn" data-width="4" data-height="1"><span class="size-btn-label">Standard</span><span class="size-btn-dims">4" × 1"</span></button>
               <button class="size-btn" data-width="5" data-height="1.5"><span class="size-btn-label">Large</span><span class="size-btn-dims">5" × 1.5"</span></button>
             </div>
           </div>
           <div id="sizeCustom" class="size-content">
             <div class="custom-size-row">
-              <div class="custom-size-input"><label>Height</label><input type="number" id="labelHeight" value="1" step="0.125" min="0.25" max="12"></div>
-              <div class="custom-size-input"><label>Width</label><input type="number" id="labelWidth" value="4" step="0.125" min="0.5" max="24"></div>
+              <div class="custom-size-input"><label>Height</label><input type="number" id="labelHeight" value="2" step="0.125" min="0.25" max="12"></div>
+              <div class="custom-size-input"><label>Width</label><input type="number" id="labelWidth" value="7" step="0.125" min="0.5" max="24"></div>
             </div>
           </div>
         </div>
@@ -321,8 +321,8 @@
     const BASE_PPI = 50; // Pixels per inch - constant scale factor
     
     const state = {
-      height: 1, width: 4, font: 'Calibri',
-      textLines: [{ text: '', fontSize: 20, x: 50, y: 50 }],
+      height: 2, width: 7, font: 'Calibri',
+      textLines: [{ text: '', fontSize: 32, x: 50, y: 50 }],
       labelColor: '#22c55e', textColor: '#FFFFFF',
       corners: 'squared', quantity: 1, savedLabels: []
     };
@@ -486,7 +486,7 @@
       });
       document.getElementById('fontSelect').addEventListener('change', (e) => { state.font = e.target.value; updatePreview(); });
       document.getElementById('btnAddLine').addEventListener('click', () => {
-        state.textLines.push({ text: '', fontSize: 20, x: 50, y: Math.max(20, Math.min(80, 50 + (state.textLines.length * 20))) });
+        state.textLines.push({ text: '', fontSize: 32, x: 50, y: Math.max(20, Math.min(80, 50 + (state.textLines.length * 20))) });
         renderTextLineInputs(); updatePreview();
       });
       document.getElementById('quantity').addEventListener('input', (e) => { state.quantity = parseInt(e.target.value) || 1; });
@@ -507,20 +507,19 @@
     }
 
     function resetPage() {
-      state.height = 1; state.width = 4; state.font = 'Calibri';
-      state.textLines = [{ text: '', fontSize: 20, x: 50, y: 50 }];
+      state.height = 2; state.width = 7; state.font = 'Calibri';
+      state.textLines = [{ text: '', fontSize: 32, x: 50, y: 50 }];
       state.labelColor = '#22c55e'; state.textColor = '#FFFFFF';
       state.corners = 'squared'; state.quantity = 1; state.savedLabels = [];
       
-      document.getElementById('labelHeight').value = 1;
-      document.getElementById('labelWidth').value = 4;
+      document.getElementById('labelHeight').value = 2;
+      document.getElementById('labelWidth').value = 7;
       document.getElementById('fontSelect').value = 'Calibri';
       document.getElementById('quantity').value = 1;
       document.getElementById('refId').value = '';
       document.getElementById('notes').value = '';
       
       document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'));
-      document.querySelector('.size-btn[data-width="4"]').classList.add('active');
       document.querySelectorAll('.corner-btn').forEach(b => b.classList.remove('active'));
       document.querySelector('.corner-btn[data-corner="squared"]').classList.add('active');
       

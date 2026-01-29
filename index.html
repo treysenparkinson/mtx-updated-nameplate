@@ -4,12 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Nameplate Label Creator | Matrix Systems</title>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif; background: #f0f4f8; min-height: 100vh; color: #1a202c; }
     .container { max-width: 1400px; margin: 0 auto; padding: 24px; }
-    .main-grid { display: grid; grid-template-columns: 320px 1fr 280px; gap: 20px; align-items: start; }
+    .main-grid { display: grid; grid-template-columns: 320px 1fr 280px; gap: 20px; align-items: stretch; }
     @media (max-width: 1200px) { .main-grid { grid-template-columns: 1fr 1fr; } .sidebar { grid-column: span 2; } }
     @media (max-width: 768px) { .main-grid { grid-template-columns: 1fr; } .sidebar { grid-column: span 1; } }
     
@@ -69,9 +69,14 @@
     .corner-btn:hover { border-color: #cbd5e1; }
     .corner-btn.active { border-color: #3b82f6; background: #eff6ff; color: #1d4ed8; }
 
+    /* Preview Column - Stretches to match */
     .preview-column { display: flex; flex-direction: column; }
-    .preview-header { text-align: center; font-size: 12px; color: #64748b; margin-bottom: 12px; }
-    .preview-wrapper { flex: 1; display: flex; align-items: center; justify-content: center; background: white; border-radius: 12px; border: 1px solid #e2e8f0; padding: 40px; min-height: 380px; position: relative; }
+    .preview-card { background: white; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 1px 3px rgba(0,0,0,0.08); display: flex; flex-direction: column; flex: 1; padding: 20px; }
+    .preview-header { text-align: center; font-size: 13px; color: #1a365d; margin-bottom: 8px; font-weight: 600; }
+    .drag-instruction { text-align: center; margin-bottom: 16px; }
+    .drag-instruction-badge { display: inline-flex; align-items: center; gap: 6px; background: #dbeafe; color: #1d4ed8; padding: 8px 16px; border-radius: 20px; font-size: 12px; font-weight: 500; }
+    .drag-instruction-badge svg { width: 16px; height: 16px; }
+    .preview-wrapper { flex: 1; display: flex; align-items: center; justify-content: center; min-height: 300px; position: relative; }
     
     .label-container { position: relative; }
     .label-preview { position: relative; display: flex; align-items: center; justify-content: center; cursor: default; overflow: visible; transition: all 0.3s ease; }
@@ -88,7 +93,7 @@
     .text-line:hover { opacity: 0.7; }
     .text-line.dragging { opacity: 0.5; z-index: 20; }
     
-    .preview-footer { text-align: center; margin-top: 12px; }
+    .preview-footer { text-align: center; margin-top: 16px; padding-top: 16px; border-top: 1px solid #f1f5f9; }
     .reset-positions { font-size: 11px; color: #64748b; background: none; border: none; cursor: pointer; text-decoration: underline; font-family: 'Montserrat', sans-serif; }
     .reset-positions:hover { color: #3b82f6; }
     .add-section { display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 16px; }
@@ -97,71 +102,38 @@
     .btn-add { padding: 10px 28px; background: #10b981; color: white; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; font-family: 'Montserrat', sans-serif; cursor: pointer; transition: all 0.2s; }
     .btn-add:hover { background: #059669; transform: translateY(-1px); }
 
-    /* Checkmark Animation */
-    .checkmark-overlay {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      pointer-events: none;
-      opacity: 0;
-      z-index: 100;
-    }
-    .checkmark-overlay.show {
-      animation: checkmarkFade 1.2s ease-out forwards;
-    }
-    @keyframes checkmarkFade {
-      0% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
-      20% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-      80% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-      100% { opacity: 0; transform: translate(-50%, -50%) scale(1); }
-    }
-    .checkmark-circle {
-      width: 56px;
-      height: 56px;
-      border-radius: 50%;
-      background: #10b981;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
-    }
-    .checkmark-icon {
-      width: 28px;
-      height: 28px;
-      stroke: white;
-      stroke-width: 3;
-      fill: none;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-      stroke-dasharray: 40;
-      stroke-dashoffset: 40;
-    }
-    .checkmark-overlay.show .checkmark-icon {
-      animation: checkmarkDraw 0.4s ease-out 0.15s forwards;
-    }
-    @keyframes checkmarkDraw {
-      to { stroke-dashoffset: 0; }
-    }
+    /* Checkmark */
+    .checkmark-overlay { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none; opacity: 0; z-index: 100; }
+    .checkmark-overlay.show { animation: checkmarkFade 1.2s ease-out forwards; }
+    @keyframes checkmarkFade { 0% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); } 20% { opacity: 1; transform: translate(-50%, -50%) scale(1); } 80% { opacity: 1; } 100% { opacity: 0; } }
+    .checkmark-circle { width: 56px; height: 56px; border-radius: 50%; background: #10b981; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4); }
+    .checkmark-icon { width: 28px; height: 28px; stroke: white; stroke-width: 3; fill: none; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 40; stroke-dashoffset: 40; }
+    .checkmark-overlay.show .checkmark-icon { animation: checkmarkDraw 0.4s ease-out 0.15s forwards; }
+    @keyframes checkmarkDraw { to { stroke-dashoffset: 0; } }
 
+    /* Sidebar */
     .sidebar { display: flex; flex-direction: column; gap: 16px; }
     .saved-labels-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
     .saved-labels-title { font-size: 14px; font-weight: 600; color: #1a365d; }
     .saved-labels-count { font-size: 12px; color: #10b981; font-weight: 600; }
-    .saved-labels-list { display: flex; flex-direction: column; gap: 8px; max-height: 260px; overflow-y: auto; }
-    .saved-label-item { display: flex; align-items: center; gap: 10px; padding: 10px; background: #f8fafc; border-radius: 8px; border: 1px solid #e2e8f0; }
+    .saved-labels-list { display: flex; flex-direction: column; gap: 8px; max-height: 300px; overflow-y: auto; }
+    .saved-label-item { display: flex; align-items: center; gap: 8px; padding: 10px; background: #f8fafc; border-radius: 8px; border: 1px solid #e2e8f0; }
     @keyframes slideIn { 0% { opacity: 0; transform: translateX(-10px); } 100% { opacity: 1; transform: translateX(0); } }
     .saved-label-item.just-added { animation: slideIn 0.3s ease-out; }
-    .saved-label-preview { width: 44px; height: 24px; border-radius: 3px; display: flex; align-items: center; justify-content: center; font-size: 6px; overflow: hidden; flex-shrink: 0; }
+    .saved-label-preview { width: 40px; height: 22px; border-radius: 3px; display: flex; align-items: center; justify-content: center; font-size: 5px; overflow: hidden; flex-shrink: 0; }
     .saved-label-preview.has-outline { box-shadow: 0 0 0 1px #d1d5db; }
     .saved-label-info { flex: 1; min-width: 0; }
     .saved-label-text { font-size: 11px; font-weight: 600; color: #1a365d; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .saved-label-details { font-size: 9px; color: #64748b; margin-top: 2px; }
-    .saved-label-qty { font-size: 10px; font-weight: 600; color: #475569; background: #e2e8f0; padding: 3px 7px; border-radius: 4px; }
-    .btn-remove-saved { width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; background: transparent; color: #94a3b8; border: none; cursor: pointer; font-size: 14px; border-radius: 4px; }
-    .btn-remove-saved:hover { color: #dc2626; background: #fee2e2; }
+    .saved-label-qty { font-size: 10px; font-weight: 600; color: #475569; background: #e2e8f0; padding: 3px 6px; border-radius: 4px; flex-shrink: 0; }
+    .saved-label-actions { display: flex; gap: 4px; flex-shrink: 0; }
+    .btn-label-action { width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; background: transparent; color: #94a3b8; border: none; cursor: pointer; border-radius: 4px; transition: all 0.15s; }
+    .btn-label-action:hover { background: #e2e8f0; color: #475569; }
+    .btn-label-action.delete:hover { background: #fee2e2; color: #dc2626; }
+    .btn-label-action svg { width: 14px; height: 14px; }
     .empty-state { text-align: center; padding: 28px 16px; color: #94a3b8; font-size: 12px; }
 
+    /* Submit */
     .submit-card { display: flex; flex-direction: column; gap: 10px; }
     .submit-input { width: 100%; padding: 11px 12px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 13px; font-family: 'Montserrat', sans-serif; }
     .submit-input:focus { outline: none; border-color: #3b82f6; }
@@ -174,6 +146,22 @@
     .notes-textarea { width: 100%; padding: 10px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 12px; font-family: 'Montserrat', sans-serif; resize: vertical; min-height: 70px; }
     .notes-textarea:focus { outline: none; border-color: #3b82f6; }
     .notes-textarea::placeholder { color: #94a3b8; }
+
+    /* Success Modal */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 1000; opacity: 0; visibility: hidden; transition: all 0.3s ease; }
+    .modal-overlay.show { opacity: 1; visibility: visible; }
+    .modal { background: white; border-radius: 16px; padding: 32px; max-width: 420px; width: 90%; text-align: center; transform: scale(0.9); transition: transform 0.3s ease; }
+    .modal-overlay.show .modal { transform: scale(1); }
+    .modal-icon { width: 64px; height: 64px; background: #d1fae5; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; }
+    .modal-icon svg { width: 32px; height: 32px; stroke: #10b981; stroke-width: 3; fill: none; }
+    .modal-title { font-size: 22px; font-weight: 700; color: #1a365d; margin-bottom: 12px; }
+    .modal-description { font-size: 14px; color: #64748b; line-height: 1.6; margin-bottom: 28px; }
+    .modal-buttons { display: flex; gap: 12px; }
+    .modal-btn { flex: 1; padding: 14px 20px; border-radius: 8px; font-size: 14px; font-weight: 600; font-family: 'Montserrat', sans-serif; cursor: pointer; transition: all 0.2s; }
+    .modal-btn-primary { background: #10b981; color: white; border: none; }
+    .modal-btn-primary:hover { background: #059669; }
+    .modal-btn-secondary { background: white; color: #475569; border: 2px solid #e2e8f0; }
+    .modal-btn-secondary:hover { border-color: #cbd5e1; background: #f8fafc; }
 
     .toast { position: fixed; bottom: 24px; right: 24px; padding: 14px 20px; background: #1a365d; color: white; border-radius: 8px; font-size: 13px; font-family: 'Montserrat', sans-serif; transform: translateY(100px); opacity: 0; transition: all 0.3s ease; z-index: 200; }
     .toast.show { transform: translateY(0); opacity: 1; }
@@ -262,28 +250,34 @@
       </div>
 
       <div class="preview-column">
-        <div class="preview-header" id="previewHeader">Standard · 4" × 1" — Drag text to reposition</div>
-        <div class="preview-wrapper">
-          <div class="label-container">
-            <div id="labelPreview" class="label-preview squared">
-              <div class="guide-line center-h" id="guideH"></div>
-              <div class="guide-line center-v" id="guideV"></div>
+        <div class="preview-card">
+          <div class="preview-header" id="previewHeader">Standard · 4" × 1"</div>
+          <div class="drag-instruction">
+            <span class="drag-instruction-badge">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 9l-3 3 3 3M9 5l3-3 3 3M15 19l-3 3-3-3M19 9l3 3-3 3M2 12h20M12 2v20"/></svg>
+              Drag text to reposition
+            </span>
+          </div>
+          <div class="preview-wrapper">
+            <div class="label-container">
+              <div id="labelPreview" class="label-preview squared">
+                <div class="guide-line center-h" id="guideH"></div>
+                <div class="guide-line center-v" id="guideV"></div>
+              </div>
+            </div>
+            <div class="checkmark-overlay" id="checkmarkOverlay">
+              <div class="checkmark-circle">
+                <svg class="checkmark-icon" viewBox="0 0 24 24"><polyline points="4,12 10,18 20,6"></polyline></svg>
+              </div>
             </div>
           </div>
-          <div class="checkmark-overlay" id="checkmarkOverlay">
-            <div class="checkmark-circle">
-              <svg class="checkmark-icon" viewBox="0 0 24 24">
-                <polyline points="4,12 10,18 20,6"></polyline>
-              </svg>
+          <div class="preview-footer">
+            <button class="reset-positions" id="btnResetPositions">Reset text positions</button>
+            <div class="add-section">
+              <input type="number" id="quantity" class="quantity-input" value="1" min="1" max="999">
+              <button id="btnAddToList" class="btn-add">Add to List</button>
             </div>
           </div>
-        </div>
-        <div class="preview-footer">
-          <button class="reset-positions" id="btnResetPositions">Reset text positions</button>
-        </div>
-        <div class="add-section">
-          <input type="number" id="quantity" class="quantity-input" value="1" min="1" max="999">
-          <button id="btnAddToList" class="btn-add">Add to List</button>
         </div>
       </div>
 
@@ -310,6 +304,22 @@
       </div>
     </div>
   </div>
+
+  <!-- Success Modal -->
+  <div class="modal-overlay" id="successModal">
+    <div class="modal">
+      <div class="modal-icon">
+        <svg viewBox="0 0 24 24"><polyline points="4,12 10,18 20,6"></polyline></svg>
+      </div>
+      <h2 class="modal-title">Thank you for using our creator!</h2>
+      <p class="modal-description">We will be sure to get back to you as soon as possible.</p>
+      <div class="modal-buttons">
+        <button class="modal-btn modal-btn-secondary" id="btnGoHome">Go Home</button>
+        <button class="modal-btn modal-btn-primary" id="btnCreateMore">Create More</button>
+      </div>
+    </div>
+  </div>
+
   <div id="toast" class="toast"></div>
 
   <script>
@@ -336,8 +346,8 @@
     });
 
     function loadFromStorage() {
-      const savedLabels = localStorage.getItem('nameplateLabelsV4');
-      const contact = localStorage.getItem('nameplateContactV4');
+      const savedLabels = localStorage.getItem('nameplateLabelsV5');
+      const contact = localStorage.getItem('nameplateContactV5');
       if (savedLabels) state.savedLabels = JSON.parse(savedLabels);
       if (contact) {
         const { name, email } = JSON.parse(contact);
@@ -347,8 +357,8 @@
     }
 
     function saveToStorage() {
-      localStorage.setItem('nameplateLabelsV4', JSON.stringify(state.savedLabels));
-      localStorage.setItem('nameplateContactV4', JSON.stringify({
+      localStorage.setItem('nameplateLabelsV5', JSON.stringify(state.savedLabels));
+      localStorage.setItem('nameplateContactV5', JSON.stringify({
         name: document.getElementById('contactName').value,
         email: document.getElementById('contactEmail').value
       }));
@@ -490,6 +500,38 @@
       document.getElementById('contactName').addEventListener('input', saveToStorage);
       document.getElementById('contactEmail').addEventListener('input', saveToStorage);
       document.getElementById('refId').addEventListener('input', updateSubmitButton);
+      
+      // Modal buttons
+      document.getElementById('btnCreateMore').addEventListener('click', () => {
+        document.getElementById('successModal').classList.remove('show');
+        resetPage();
+      });
+      document.getElementById('btnGoHome').addEventListener('click', () => {
+        window.location.href = 'https://www.matrixpci.com';
+      });
+    }
+
+    function resetPage() {
+      state.height = 1; state.width = 4; state.font = 'Calibri';
+      state.textLines = [{ text: '', fontSize: 20, x: 50, y: 50 }];
+      state.labelColor = '#22c55e'; state.textColor = '#FFFFFF';
+      state.corners = 'squared'; state.quantity = 1; state.savedLabels = [];
+      
+      document.getElementById('labelHeight').value = 1;
+      document.getElementById('labelWidth').value = 4;
+      document.getElementById('fontSelect').value = 'Calibri';
+      document.getElementById('quantity').value = 1;
+      document.getElementById('refId').value = '';
+      document.getElementById('notes').value = '';
+      
+      document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'));
+      document.querySelector('.size-btn[data-width="4"]').classList.add('active');
+      document.querySelectorAll('.corner-btn').forEach(b => b.classList.remove('active'));
+      document.querySelector('.corner-btn[data-corner="squared"]').classList.add('active');
+      
+      initColorPalettes(); renderTextLineInputs(); updatePreview();
+      updateSavedLabelsList(); updateSubmitButton(); updateColorPreviews();
+      saveToStorage();
     }
 
     function resetTextPositions() {
@@ -504,7 +546,7 @@
 
     function updatePreview() {
       const preview = document.getElementById('labelPreview');
-      const scale = Math.min(380 / (state.width * 72), 180 / (state.height * 72));
+      const scale = Math.min(380 / (state.width * 72), 200 / (state.height * 72));
       const width = state.width * 72 * scale;
       const height = state.height * 72 * scale;
 
@@ -526,7 +568,7 @@
       
       preview.innerHTML = html;
       setupDragHandlers();
-      document.getElementById('previewHeader').textContent = `${getSizeLabel()} · ${state.width}" × ${state.height}" — Drag text to reposition`;
+      document.getElementById('previewHeader').textContent = `${getSizeLabel()} · ${state.width}" × ${state.height}"`;
     }
 
     function getSizeLabel() {
@@ -546,13 +588,10 @@
         let isDragging = false, startX, startY, startLeft, startTop;
         
         const onStart = (clientX, clientY) => {
-          isDragging = true;
-          el.classList.add('dragging');
-          startX = clientX;
-          startY = clientY;
+          isDragging = true; el.classList.add('dragging');
+          startX = clientX; startY = clientY;
           const index = parseInt(el.dataset.index);
-          startLeft = state.textLines[index].x;
-          startTop = state.textLines[index].y;
+          startLeft = state.textLines[index].x; startTop = state.textLines[index].y;
         };
         
         const onMove = (clientX, clientY) => {
@@ -588,10 +627,8 @@
         
         const onEnd = () => {
           if (isDragging) {
-            isDragging = false;
-            el.classList.remove('dragging');
-            guideH.classList.remove('visible');
-            guideV.classList.remove('visible');
+            isDragging = false; el.classList.remove('dragging');
+            guideH.classList.remove('visible'); guideV.classList.remove('visible');
           }
         };
         
@@ -612,7 +649,7 @@
     function showCheckmark() {
       const overlay = document.getElementById('checkmarkOverlay');
       overlay.classList.remove('show');
-      void overlay.offsetWidth; // Trigger reflow
+      void overlay.offsetWidth;
       overlay.classList.add('show');
       setTimeout(() => overlay.classList.remove('show'), 1200);
     }
@@ -632,6 +669,38 @@
       showToast(`Added ${state.quantity} label${state.quantity > 1 ? 's' : ''} to list`, 'success');
     }
 
+    function duplicateLabel(id) {
+      const label = state.savedLabels.find(l => l.id === id);
+      if (!label) return;
+      const newLabel = JSON.parse(JSON.stringify(label));
+      newLabel.id = Date.now();
+      state.savedLabels.push(newLabel);
+      saveToStorage(); updateSavedLabelsList(true); updateSubmitButton();
+      showToast('Label duplicated', 'success');
+    }
+
+    function copyToEditor(id) {
+      const label = state.savedLabels.find(l => l.id === id);
+      if (!label) return;
+      
+      state.height = label.height; state.width = label.width;
+      state.font = label.font; state.textLines = JSON.parse(JSON.stringify(label.textLines));
+      state.labelColor = label.labelColor; state.textColor = label.textColor;
+      state.corners = label.corners;
+      
+      document.getElementById('labelHeight').value = state.height;
+      document.getElementById('labelWidth').value = state.width;
+      document.getElementById('fontSelect').value = state.font;
+      
+      document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.corner-btn').forEach(b => {
+        b.classList.toggle('active', b.dataset.corner === state.corners);
+      });
+      
+      initColorPalettes(); renderTextLineInputs(); updatePreview(); updateColorPreviews();
+      showToast('Copied to editor', 'success');
+    }
+
     function updateSavedLabelsList(justAdded = false) {
       const container = document.getElementById('savedLabelsList');
       const totalCount = state.savedLabels.reduce((sum, l) => sum + l.quantity, 0);
@@ -648,13 +717,23 @@
         const needsOutline = label.labelColor.toUpperCase() === '#FFFFFF';
         return `
           <div class="saved-label-item ${justAdded && isLast ? 'just-added' : ''}">
-            <div class="saved-label-preview ${needsOutline ? 'has-outline' : ''}" style="background:${label.labelColor};color:${label.textColor};font-family:${fontFamily}">${escapeHtml(primaryText.substring(0, 8))}</div>
+            <div class="saved-label-preview ${needsOutline ? 'has-outline' : ''}" style="background:${label.labelColor};color:${label.textColor};font-family:${fontFamily}">${escapeHtml(primaryText.substring(0, 6))}</div>
             <div class="saved-label-info">
               <div class="saved-label-text">${escapeHtml(primaryText)}</div>
               <div class="saved-label-details">${label.width}" × ${label.height}" · ${getColorName(label.labelColor)}/${getColorName(label.textColor)}</div>
             </div>
             <span class="saved-label-qty">×${label.quantity}</span>
-            <button class="btn-remove-saved" onclick="removeLabel(${label.id})">×</button>
+            <div class="saved-label-actions">
+              <button class="btn-label-action" onclick="copyToEditor(${label.id})" title="Copy to editor">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 4h2a2 2 0 012 2v14a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg>
+              </button>
+              <button class="btn-label-action" onclick="duplicateLabel(${label.id})" title="Duplicate">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+              </button>
+              <button class="btn-label-action delete" onclick="removeLabel(${label.id})" title="Delete">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3,6 5,6 21,6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>
+              </button>
+            </div>
           </div>
         `;
       }).join('');
@@ -688,10 +767,7 @@
           body: JSON.stringify({ refId, contactName, contactEmail, notes, labels: state.savedLabels })
         });
         if (response.ok) {
-          showToast(`Quote request submitted! Reference: ${refId}`, 'success');
-          state.savedLabels = []; saveToStorage(); updateSavedLabelsList();
-          document.getElementById('refId').value = ''; document.getElementById('notes').value = '';
-          updateSubmitButton();
+          document.getElementById('successModal').classList.add('show');
         } else throw new Error('Submission failed');
       } catch (error) {
         showToast('Failed to submit. Please try again.', 'error');

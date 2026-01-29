@@ -9,103 +9,131 @@
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif; background: #f0f4f8; min-height: 100vh; color: #1a202c; }
     .container { max-width: 1400px; margin: 0 auto; padding: 24px; }
-    .main-grid { display: grid; grid-template-columns: 340px 1fr 280px; gap: 24px; }
+    .main-grid { display: grid; grid-template-columns: 320px 1fr 280px; gap: 20px; align-items: start; }
     @media (max-width: 1200px) { .main-grid { grid-template-columns: 1fr 1fr; } .sidebar { grid-column: span 2; } }
     @media (max-width: 768px) { .main-grid { grid-template-columns: 1fr; } .sidebar { grid-column: span 1; } }
-    .card { background: white; border-radius: 12px; padding: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); border: 1px solid #e2e8f0; }
-    .card-title { font-size: 14px; font-weight: 600; color: #1a365d; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.5px; }
-    .controls-column { display: flex; flex-direction: column; gap: 20px; }
-    .size-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
-    .size-btn { padding: 12px 8px; border: 2px solid #e2e8f0; border-radius: 8px; background: white; cursor: pointer; transition: all 0.2s; text-align: center; font-family: 'Montserrat', sans-serif; }
+    
+    .card { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); border: 1px solid #e2e8f0; }
+    .card-title { font-size: 11px; font-weight: 700; color: #64748b; margin-bottom: 14px; text-transform: uppercase; letter-spacing: 0.8px; }
+    .controls-column { display: flex; flex-direction: column; gap: 16px; }
+
+    /* Toggle Tabs */
+    .toggle-tabs { display: flex; background: #f1f5f9; border-radius: 8px; padding: 4px; margin-bottom: 14px; }
+    .toggle-tab { flex: 1; padding: 8px 12px; border: none; background: transparent; font-size: 12px; font-weight: 600; font-family: 'Montserrat', sans-serif; color: #64748b; cursor: pointer; border-radius: 6px; transition: all 0.2s; }
+    .toggle-tab.active { background: white; color: #1a365d; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+
+    /* Size Presets */
+    .size-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .size-btn { padding: 10px 8px; border: 2px solid #e2e8f0; border-radius: 8px; background: white; cursor: pointer; transition: all 0.2s; text-align: center; font-family: 'Montserrat', sans-serif; }
     .size-btn:hover { border-color: #cbd5e1; }
     .size-btn.active { border-color: #3b82f6; background: #eff6ff; }
-    .size-btn-label { font-size: 13px; font-weight: 600; color: #1a365d; display: block; }
-    .size-btn-dims { font-size: 11px; color: #64748b; margin-top: 2px; }
-    .custom-size-section { padding-top: 12px; border-top: 1px solid #e2e8f0; }
-    .custom-size-label { font-size: 12px; font-weight: 500; color: #64748b; margin-bottom: 8px; }
+    .size-btn-label { font-size: 12px; font-weight: 600; color: #1a365d; display: block; }
+    .size-btn-dims { font-size: 10px; color: #64748b; margin-top: 2px; }
+
+    /* Custom Size */
     .custom-size-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
     .custom-size-input { position: relative; }
-    .custom-size-input label { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); font-size: 11px; color: #94a3b8; pointer-events: none; }
-    .custom-size-input input { width: 100%; padding: 10px 10px 10px 50px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 14px; font-family: 'Montserrat', sans-serif; }
+    .custom-size-input label { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 11px; font-weight: 500; color: #64748b; pointer-events: none; }
+    .custom-size-input input { width: 100%; padding: 12px 12px 12px 55px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px; font-family: 'Montserrat', sans-serif; }
     .custom-size-input input:focus { outline: none; border-color: #3b82f6; }
-    .form-group label { display: block; font-size: 12px; font-weight: 600; color: #475569; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.3px; }
-    .form-select { width: 100%; padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px; font-family: 'Montserrat', sans-serif; background: white; cursor: pointer; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2364748b' d='M6 8L1 3h10z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; }
+
+    .size-content, .color-content { display: none; }
+    .size-content.active, .color-content.active { display: block; }
+
+    /* Form Elements */
+    .form-select { width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 13px; font-family: 'Montserrat', sans-serif; background: white; cursor: pointer; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2364748b' d='M6 8L1 3h10z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; }
     .form-select:focus { outline: none; border-color: #3b82f6; }
-    .text-lines-container { display: flex; flex-direction: column; gap: 10px; }
-    .text-line-row { display: flex; gap: 8px; align-items: center; }
-    .text-line-label { font-size: 12px; color: #64748b; width: 50px; flex-shrink: 0; }
-    .text-line-row input { flex: 1; padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 14px; font-family: 'Montserrat', sans-serif; }
+
+    /* Text Lines */
+    .text-lines-container { display: flex; flex-direction: column; gap: 8px; }
+    .text-line-row { display: grid; grid-template-columns: 1fr 70px auto; gap: 8px; align-items: center; }
+    .text-line-row input { width: 100%; padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 13px; font-family: 'Montserrat', sans-serif; }
     .text-line-row input:focus { outline: none; border-color: #3b82f6; }
     .text-line-row input::placeholder { color: #94a3b8; }
-    .text-line-row select { width: 75px; padding: 10px 8px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 13px; font-family: 'Montserrat', sans-serif; background: white; cursor: pointer; }
+    .text-line-row select { width: 100%; padding: 10px 6px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 12px; font-family: 'Montserrat', sans-serif; background: white; cursor: pointer; }
     .text-line-row select:focus { outline: none; border-color: #3b82f6; }
-    .btn-remove-line { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; background: #fee2e2; color: #dc2626; border: none; border-radius: 6px; font-size: 18px; cursor: pointer; transition: background 0.2s; flex-shrink: 0; }
+    .btn-remove-line { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; background: #fee2e2; color: #dc2626; border: none; border-radius: 6px; font-size: 16px; cursor: pointer; transition: background 0.2s; }
     .btn-remove-line:hover { background: #fecaca; }
-    .btn-add-line { padding: 10px; background: #f8fafc; color: #475569; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 13px; font-family: 'Montserrat', sans-serif; cursor: pointer; transition: all 0.2s; margin-top: 4px; }
+    .btn-add-line { width: 100%; padding: 10px; background: #f8fafc; color: #64748b; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 12px; font-weight: 500; font-family: 'Montserrat', sans-serif; cursor: pointer; transition: all 0.2s; margin-top: 4px; }
     .btn-add-line:hover { background: #f1f5f9; border-color: #cbd5e1; }
+
+    /* Color Palette */
     .color-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
-    .color-btn { aspect-ratio: 1; border: 3px solid transparent; border-radius: 8px; cursor: pointer; transition: all 0.2s; position: relative; }
+    .color-btn { aspect-ratio: 1; border: 3px solid transparent; border-radius: 8px; cursor: pointer; transition: all 0.2s; }
     .color-btn:hover { transform: scale(1.05); }
     .color-btn.active { border-color: #3b82f6; box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3); }
     .color-btn.white-option { border: 3px solid #d1d5db; }
     .color-btn.white-option.active { border-color: #3b82f6; }
-    .corner-options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    .corner-btn { padding: 12px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 13px; font-weight: 500; font-family: 'Montserrat', sans-serif; background: white; cursor: pointer; transition: all 0.2s; color: #475569; }
+
+    .color-preview { display: flex; gap: 12px; margin-top: 12px; padding-top: 12px; border-top: 1px solid #f1f5f9; }
+    .color-preview-item { flex: 1; text-align: center; }
+    .color-preview-label { font-size: 10px; color: #64748b; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .color-preview-swatch { height: 28px; border-radius: 6px; border: 1px solid #e2e8f0; }
+
+    /* Corner Options */
+    .corner-options { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .corner-btn { padding: 10px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 12px; font-weight: 500; font-family: 'Montserrat', sans-serif; background: white; cursor: pointer; transition: all 0.2s; color: #475569; }
     .corner-btn:hover { border-color: #cbd5e1; }
     .corner-btn.active { border-color: #3b82f6; background: #eff6ff; color: #1d4ed8; }
+
+    /* Preview Column */
     .preview-column { display: flex; flex-direction: column; }
-    .preview-header { text-align: center; font-size: 13px; color: #64748b; margin-bottom: 16px; }
-    .preview-wrapper { flex: 1; display: flex; align-items: center; justify-content: center; background: white; border-radius: 12px; border: 1px solid #e2e8f0; padding: 40px; min-height: 400px; }
-    .label-preview { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: default; overflow: hidden; transition: all 0.3s ease; }
+    .preview-header { text-align: center; font-size: 12px; color: #64748b; margin-bottom: 12px; }
+    .preview-wrapper { flex: 1; display: flex; align-items: center; justify-content: center; background: white; border-radius: 12px; border: 1px solid #e2e8f0; padding: 40px; min-height: 380px; }
+    .label-preview { position: relative; display: flex; align-items: center; justify-content: center; cursor: default; overflow: hidden; transition: all 0.3s ease; }
     .label-preview.rounded { border-radius: 8px; }
     .label-preview.squared { border-radius: 0; }
-    .label-preview.white-label { box-shadow: 0 0 0 2px #d1d5db; }
+    .label-preview.has-outline { box-shadow: 0 0 0 2px #d1d5db; }
     .text-line { position: absolute; cursor: move; user-select: none; white-space: nowrap; transition: opacity 0.15s; }
     .text-line:hover { opacity: 0.7; }
     .text-line.dragging { opacity: 0.5; }
-    .preview-footer { text-align: center; margin-top: 16px; }
-    .reset-positions { font-size: 12px; color: #64748b; background: none; border: none; cursor: pointer; text-decoration: underline; font-family: 'Montserrat', sans-serif; }
+    .preview-footer { text-align: center; margin-top: 12px; }
+    .reset-positions { font-size: 11px; color: #64748b; background: none; border: none; cursor: pointer; text-decoration: underline; font-family: 'Montserrat', sans-serif; }
     .reset-positions:hover { color: #3b82f6; }
-    .add-section { display: flex; align-items: center; justify-content: center; gap: 16px; margin-top: 20px; }
-    .quantity-input { width: 60px; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 16px; font-family: 'Montserrat', sans-serif; text-align: center; }
+    .add-section { display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 16px; }
+    .quantity-input { width: 56px; padding: 10px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 15px; font-family: 'Montserrat', sans-serif; text-align: center; }
     .quantity-input:focus { outline: none; border-color: #3b82f6; }
-    .btn-add { padding: 12px 32px; background: #10b981; color: white; border: none; border-radius: 8px; font-size: 15px; font-weight: 600; font-family: 'Montserrat', sans-serif; cursor: pointer; transition: all 0.2s; }
+    .btn-add { padding: 10px 28px; background: #10b981; color: white; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; font-family: 'Montserrat', sans-serif; cursor: pointer; transition: all 0.2s; }
     .btn-add:hover { background: #059669; transform: translateY(-1px); }
-    .btn-add:active { transform: translateY(0); }
-    .sidebar { display: flex; flex-direction: column; gap: 20px; }
-    .saved-labels-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-    .saved-labels-title { font-size: 16px; font-weight: 600; color: #1a365d; }
-    .saved-labels-count { font-size: 13px; color: #10b981; font-weight: 500; }
-    .saved-labels-list { display: flex; flex-direction: column; gap: 8px; max-height: 280px; overflow-y: auto; }
-    .saved-label-item { display: flex; align-items: center; gap: 12px; padding: 12px; background: #f8fafc; border-radius: 8px; border: 1px solid #e2e8f0; }
-    @keyframes popIn { 0% { opacity: 0; transform: scale(0.8) translateY(-10px); } 50% { transform: scale(1.05) translateY(0); } 100% { opacity: 1; transform: scale(1) translateY(0); } }
+
+    /* Sidebar */
+    .sidebar { display: flex; flex-direction: column; gap: 16px; }
+    .saved-labels-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+    .saved-labels-title { font-size: 14px; font-weight: 600; color: #1a365d; }
+    .saved-labels-count { font-size: 12px; color: #10b981; font-weight: 600; }
+    .saved-labels-list { display: flex; flex-direction: column; gap: 8px; max-height: 260px; overflow-y: auto; }
+    .saved-label-item { display: flex; align-items: center; gap: 10px; padding: 10px; background: #f8fafc; border-radius: 8px; border: 1px solid #e2e8f0; }
+    @keyframes popIn { 0% { opacity: 0; transform: scale(0.8) translateY(-10px); } 50% { transform: scale(1.05); } 100% { opacity: 1; transform: scale(1); } }
     .saved-label-item.just-added { animation: popIn 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55); }
-    .saved-label-preview { width: 50px; height: 28px; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 7px; overflow: hidden; flex-shrink: 0; }
-    .saved-label-preview.white-preview { box-shadow: 0 0 0 1px #d1d5db; }
+    .saved-label-preview { width: 44px; height: 24px; border-radius: 3px; display: flex; align-items: center; justify-content: center; font-size: 6px; overflow: hidden; flex-shrink: 0; }
+    .saved-label-preview.has-outline { box-shadow: 0 0 0 1px #d1d5db; }
     .saved-label-info { flex: 1; min-width: 0; }
-    .saved-label-text { font-size: 12px; font-weight: 600; color: #1a365d; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .saved-label-details { font-size: 10px; color: #64748b; margin-top: 2px; }
-    .saved-label-qty { font-size: 11px; font-weight: 600; color: #475569; background: #e2e8f0; padding: 4px 8px; border-radius: 4px; flex-shrink: 0; }
-    .btn-remove-saved { width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; background: transparent; color: #94a3b8; border: none; cursor: pointer; font-size: 16px; border-radius: 4px; flex-shrink: 0; }
+    .saved-label-text { font-size: 11px; font-weight: 600; color: #1a365d; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .saved-label-details { font-size: 9px; color: #64748b; margin-top: 2px; }
+    .saved-label-qty { font-size: 10px; font-weight: 600; color: #475569; background: #e2e8f0; padding: 3px 7px; border-radius: 4px; }
+    .btn-remove-saved { width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; background: transparent; color: #94a3b8; border: none; cursor: pointer; font-size: 14px; border-radius: 4px; }
     .btn-remove-saved:hover { color: #dc2626; background: #fee2e2; }
-    .empty-state { text-align: center; padding: 32px 16px; color: #94a3b8; font-size: 13px; }
-    .submit-card { display: flex; flex-direction: column; gap: 12px; }
-    .submit-input { width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px; font-family: 'Montserrat', sans-serif; }
+    .empty-state { text-align: center; padding: 28px 16px; color: #94a3b8; font-size: 12px; }
+
+    /* Submit */
+    .submit-card { display: flex; flex-direction: column; gap: 10px; }
+    .submit-input { width: 100%; padding: 11px 12px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 13px; font-family: 'Montserrat', sans-serif; }
     .submit-input:focus { outline: none; border-color: #3b82f6; }
     .submit-input::placeholder { color: #94a3b8; }
-    .btn-submit { width: 100%; padding: 14px 20px; background: #10b981; color: white; border: none; border-radius: 8px; font-size: 15px; font-weight: 600; font-family: 'Montserrat', sans-serif; cursor: pointer; transition: all 0.2s; }
+    .btn-submit { width: 100%; padding: 12px; background: #10b981; color: white; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; font-family: 'Montserrat', sans-serif; cursor: pointer; transition: all 0.2s; }
     .btn-submit:hover:not(:disabled) { background: #059669; }
     .btn-submit:disabled { background: #d1d5db; cursor: not-allowed; }
-    .notes-section { margin-top: 8px; }
-    .notes-label { font-size: 12px; font-weight: 600; color: #475569; margin-bottom: 8px; display: block; }
-    .notes-textarea { width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 13px; font-family: 'Montserrat', sans-serif; resize: vertical; min-height: 80px; }
+    .notes-section { margin-top: 4px; }
+    .notes-label { font-size: 11px; font-weight: 600; color: #64748b; margin-bottom: 6px; display: block; }
+    .notes-textarea { width: 100%; padding: 10px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 12px; font-family: 'Montserrat', sans-serif; resize: vertical; min-height: 70px; }
     .notes-textarea:focus { outline: none; border-color: #3b82f6; }
     .notes-textarea::placeholder { color: #94a3b8; }
-    .toast { position: fixed; bottom: 24px; right: 24px; padding: 16px 24px; background: #1a365d; color: white; border-radius: 8px; font-size: 14px; font-family: 'Montserrat', sans-serif; transform: translateY(100px); opacity: 0; transition: all 0.3s ease; z-index: 200; }
+
+    .toast { position: fixed; bottom: 24px; right: 24px; padding: 14px 20px; background: #1a365d; color: white; border-radius: 8px; font-size: 13px; font-family: 'Montserrat', sans-serif; transform: translateY(100px); opacity: 0; transition: all 0.3s ease; z-index: 200; }
     .toast.show { transform: translateY(0); opacity: 1; }
     .toast.success { background: #059669; }
     .toast.error { background: #dc2626; }
-    .spinner { display: inline-block; width: 16px; height: 16px; border: 2px solid #ffffff; border-top-color: transparent; border-radius: 50%; animation: spin 0.8s linear infinite; margin-right: 8px; }
+    .spinner { display: inline-block; width: 14px; height: 14px; border: 2px solid #ffffff; border-top-color: transparent; border-radius: 50%; animation: spin 0.8s linear infinite; margin-right: 8px; }
     @keyframes spin { to { transform: rotate(360deg); } }
   </style>
 </head>
@@ -113,45 +141,76 @@
   <div class="container">
     <div class="main-grid">
       <div class="controls-column">
+        <!-- Size Card -->
         <div class="card">
           <div class="card-title">Label Size</div>
-          <div class="size-grid">
-            <button class="size-btn" data-width="1.5" data-height="0.5"><span class="size-btn-label">Small</span><span class="size-btn-dims">1.5" × 0.5"</span></button>
-            <button class="size-btn" data-width="2.5" data-height="0.75"><span class="size-btn-label">Medium</span><span class="size-btn-dims">2.5" × 0.75"</span></button>
-            <button class="size-btn active" data-width="4" data-height="1"><span class="size-btn-label">Standard</span><span class="size-btn-dims">4" × 1"</span></button>
-            <button class="size-btn" data-width="5" data-height="1.5"><span class="size-btn-label">Large</span><span class="size-btn-dims">5" × 1.5"</span></button>
+          <div class="toggle-tabs">
+            <button class="toggle-tab active" data-target="presets">Presets</button>
+            <button class="toggle-tab" data-target="custom">Custom</button>
           </div>
-          <div class="custom-size-section">
-            <div class="custom-size-label">Custom Size</div>
+          <div id="sizePresets" class="size-content active">
+            <div class="size-grid">
+              <button class="size-btn" data-width="1.5" data-height="0.5"><span class="size-btn-label">Small</span><span class="size-btn-dims">1.5" × 0.5"</span></button>
+              <button class="size-btn" data-width="2.5" data-height="0.75"><span class="size-btn-label">Medium</span><span class="size-btn-dims">2.5" × 0.75"</span></button>
+              <button class="size-btn active" data-width="4" data-height="1"><span class="size-btn-label">Standard</span><span class="size-btn-dims">4" × 1"</span></button>
+              <button class="size-btn" data-width="5" data-height="1.5"><span class="size-btn-label">Large</span><span class="size-btn-dims">5" × 1.5"</span></button>
+            </div>
+          </div>
+          <div id="sizeCustom" class="size-content">
             <div class="custom-size-row">
               <div class="custom-size-input"><label>Width</label><input type="number" id="labelWidth" value="4" step="0.125" min="0.5" max="24"></div>
               <div class="custom-size-input"><label>Height</label><input type="number" id="labelHeight" value="1" step="0.125" min="0.25" max="12"></div>
             </div>
           </div>
         </div>
+
+        <!-- Font Card -->
         <div class="card">
-          <div class="form-group">
-            <label>Font</label>
-            <select id="fontSelect" class="form-select">
-              <option value="Calibri" selected>Calibri (Default)</option>
-              <option value="Arial">Arial</option>
-              <option value="Helvetica">Helvetica</option>
-              <option value="Source Sans 3">Source Sans 3</option>
-              <option value="Times New Roman">Times New Roman</option>
-              <option value="Verdana">Verdana</option>
-              <option value="Tahoma">Tahoma</option>
-            </select>
-          </div>
+          <div class="card-title">Font</div>
+          <select id="fontSelect" class="form-select">
+            <option value="Calibri" selected>Calibri (Default)</option>
+            <option value="Arial">Arial</option>
+            <option value="Helvetica">Helvetica</option>
+            <option value="Source Sans 3">Source Sans 3</option>
+            <option value="Times New Roman">Times New Roman</option>
+            <option value="Verdana">Verdana</option>
+            <option value="Tahoma">Tahoma</option>
+          </select>
         </div>
+
+        <!-- Text Lines Card -->
         <div class="card">
           <div class="card-title">Text Lines</div>
           <div id="textLinesContainer" class="text-lines-container"></div>
           <button id="btnAddLine" class="btn-add-line">+ Add Line</button>
         </div>
+
+        <!-- Color Card -->
         <div class="card">
-          <div class="card-title">Color</div>
-          <div id="colorPalette" class="color-grid"></div>
+          <div class="card-title">Colors</div>
+          <div class="toggle-tabs">
+            <button class="toggle-tab active" data-target="labelColor">Label</button>
+            <button class="toggle-tab" data-target="textColor">Text</button>
+          </div>
+          <div id="labelColorContent" class="color-content active">
+            <div id="labelColorPalette" class="color-grid"></div>
+          </div>
+          <div id="textColorContent" class="color-content">
+            <div id="textColorPalette" class="color-grid"></div>
+          </div>
+          <div class="color-preview">
+            <div class="color-preview-item">
+              <div class="color-preview-label">Label</div>
+              <div id="labelColorPreview" class="color-preview-swatch"></div>
+            </div>
+            <div class="color-preview-item">
+              <div class="color-preview-label">Text</div>
+              <div id="textColorPreview" class="color-preview-swatch"></div>
+            </div>
+          </div>
         </div>
+
+        <!-- Corners Card -->
         <div class="card">
           <div class="card-title">Corners</div>
           <div class="corner-options">
@@ -160,6 +219,8 @@
           </div>
         </div>
       </div>
+
+      <!-- Preview Column -->
       <div class="preview-column">
         <div class="preview-header" id="previewHeader">Standard · 4" × 1" — Drag text to reposition</div>
         <div class="preview-wrapper">
@@ -173,6 +234,8 @@
           <button id="btnAddToList" class="btn-add">Add to List</button>
         </div>
       </div>
+
+      <!-- Sidebar -->
       <div class="sidebar">
         <div class="card">
           <div class="saved-labels-header">
@@ -202,31 +265,33 @@
     const state = {
       height: 1, width: 4, font: 'Calibri',
       textLines: [{ text: '', fontSize: 20, x: 50, y: 50 }],
-      color: { name: 'Green/White', bg: '#22c55e', text: '#FFFFFF' },
+      labelColor: '#22c55e',
+      textColor: '#FFFFFF',
       corners: 'squared', quantity: 1, savedLabels: []
     };
 
     const COLORS = [
-      { name: 'Green/White', bg: '#22c55e', text: '#FFFFFF' },
-      { name: 'Red/White', bg: '#ef4444', text: '#FFFFFF' },
-      { name: 'Yellow/Black', bg: '#eab308', text: '#000000' },
-      { name: 'Blue/White', bg: '#3b82f6', text: '#FFFFFF' },
-      { name: 'Black/White', bg: '#1a1a1a', text: '#FFFFFF' },
-      { name: 'White/Black', bg: '#FFFFFF', text: '#000000' },
-      { name: 'Orange/Black', bg: '#f97316', text: '#000000' },
-      { name: 'Gray/Black', bg: '#6b7280', text: '#000000' }
+      { name: 'Green', hex: '#22c55e' },
+      { name: 'Red', hex: '#ef4444' },
+      { name: 'Yellow', hex: '#eab308' },
+      { name: 'Blue', hex: '#3b82f6' },
+      { name: 'Black', hex: '#1a1a1a' },
+      { name: 'White', hex: '#FFFFFF' },
+      { name: 'Orange', hex: '#f97316' },
+      { name: 'Gray', hex: '#6b7280' }
     ];
 
     const FONT_SIZES = [8, 10, 12, 14, 16, 18, 20, 22, 24, 28, 32, 36, 42, 48, 56, 64, 72];
 
     document.addEventListener('DOMContentLoaded', () => {
-      loadFromStorage(); initColorPalette(); initSizeButtons(); initCornerButtons();
-      initTextLines(); initEventListeners(); updatePreview(); updateSavedLabelsList(); updateSubmitButton();
+      loadFromStorage(); initColorPalettes(); initSizeToggle(); initColorToggle();
+      initSizeButtons(); initCornerButtons(); initTextLines(); initEventListeners();
+      updatePreview(); updateSavedLabelsList(); updateSubmitButton(); updateColorPreviews();
     });
 
     function loadFromStorage() {
-      const savedLabels = localStorage.getItem('nameplateLabelsV2');
-      const contact = localStorage.getItem('nameplateContactV2');
+      const savedLabels = localStorage.getItem('nameplateLabelsV3');
+      const contact = localStorage.getItem('nameplateContactV3');
       if (savedLabels) state.savedLabels = JSON.parse(savedLabels);
       if (contact) {
         const { name, email } = JSON.parse(contact);
@@ -236,11 +301,34 @@
     }
 
     function saveToStorage() {
-      localStorage.setItem('nameplateLabelsV2', JSON.stringify(state.savedLabels));
-      localStorage.setItem('nameplateContactV2', JSON.stringify({
+      localStorage.setItem('nameplateLabelsV3', JSON.stringify(state.savedLabels));
+      localStorage.setItem('nameplateContactV3', JSON.stringify({
         name: document.getElementById('contactName').value,
         email: document.getElementById('contactEmail').value
       }));
+    }
+
+    function initSizeToggle() {
+      document.querySelectorAll('.card:first-child .toggle-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+          document.querySelectorAll('.card:first-child .toggle-tab').forEach(t => t.classList.remove('active'));
+          tab.classList.add('active');
+          document.getElementById('sizePresets').classList.toggle('active', tab.dataset.target === 'presets');
+          document.getElementById('sizeCustom').classList.toggle('active', tab.dataset.target === 'custom');
+        });
+      });
+    }
+
+    function initColorToggle() {
+      const colorCard = document.querySelector('.card:has(#labelColorPalette)');
+      colorCard.querySelectorAll('.toggle-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+          colorCard.querySelectorAll('.toggle-tab').forEach(t => t.classList.remove('active'));
+          tab.classList.add('active');
+          document.getElementById('labelColorContent').classList.toggle('active', tab.dataset.target === 'labelColor');
+          document.getElementById('textColorContent').classList.toggle('active', tab.dataset.target === 'textColor');
+        });
+      });
     }
 
     function initSizeButtons() {
@@ -257,20 +345,42 @@
       });
     }
 
-    function initColorPalette() {
-      const palette = document.getElementById('colorPalette');
-      palette.innerHTML = COLORS.map(color => `
-        <button class="color-btn ${color.name === state.color.name ? 'active' : ''} ${color.bg === '#FFFFFF' ? 'white-option' : ''}" 
-                data-color="${color.name}" style="background: ${color.bg};"></button>
+    function initColorPalettes() {
+      const labelPalette = document.getElementById('labelColorPalette');
+      const textPalette = document.getElementById('textColorPalette');
+      
+      labelPalette.innerHTML = COLORS.map(color => `
+        <button class="color-btn ${color.hex === state.labelColor ? 'active' : ''} ${color.hex === '#FFFFFF' ? 'white-option' : ''}" 
+                data-color="${color.hex}" style="background: ${color.hex};"></button>
       `).join('');
-      palette.addEventListener('click', (e) => {
+      
+      textPalette.innerHTML = COLORS.map(color => `
+        <button class="color-btn ${color.hex === state.textColor ? 'active' : ''} ${color.hex === '#FFFFFF' ? 'white-option' : ''}" 
+                data-color="${color.hex}" style="background: ${color.hex};"></button>
+      `).join('');
+
+      labelPalette.addEventListener('click', (e) => {
         if (e.target.classList.contains('color-btn')) {
-          state.color = COLORS.find(c => c.name === e.target.dataset.color);
-          document.querySelectorAll('.color-btn').forEach(btn => btn.classList.remove('active'));
+          state.labelColor = e.target.dataset.color;
+          labelPalette.querySelectorAll('.color-btn').forEach(btn => btn.classList.remove('active'));
           e.target.classList.add('active');
-          updatePreview();
+          updatePreview(); updateColorPreviews();
         }
       });
+
+      textPalette.addEventListener('click', (e) => {
+        if (e.target.classList.contains('color-btn')) {
+          state.textColor = e.target.dataset.color;
+          textPalette.querySelectorAll('.color-btn').forEach(btn => btn.classList.remove('active'));
+          e.target.classList.add('active');
+          updatePreview(); updateColorPreviews();
+        }
+      });
+    }
+
+    function updateColorPreviews() {
+      document.getElementById('labelColorPreview').style.background = state.labelColor;
+      document.getElementById('textColorPreview').style.background = state.textColor;
     }
 
     function initCornerButtons() {
@@ -290,12 +400,11 @@
       const container = document.getElementById('textLinesContainer');
       container.innerHTML = state.textLines.map((line, index) => `
         <div class="text-line-row" data-index="${index}">
-          <span class="text-line-label">Line ${index + 1}</span>
-          <input type="text" value="${escapeHtml(line.text)}" placeholder="${index === 0 ? 'Enter text' : 'Optional'}" data-field="text">
+          <input type="text" value="${escapeHtml(line.text)}" placeholder="Line ${index + 1}" data-field="text">
           <select data-field="fontSize">
             ${FONT_SIZES.map(size => `<option value="${size}" ${line.fontSize === size ? 'selected' : ''}>${size}pt</option>`).join('')}
           </select>
-          ${state.textLines.length > 1 ? `<button class="btn-remove-line" data-index="${index}">×</button>` : ''}
+          ${state.textLines.length > 1 ? `<button class="btn-remove-line" data-index="${index}">×</button>` : '<div style="width:32px"></div>'}
         </div>
       `).join('');
 
@@ -350,25 +459,26 @@
 
     function updatePreview() {
       const preview = document.getElementById('labelPreview');
-      const scale = Math.min(400 / (state.width * 72), 200 / (state.height * 72));
+      const scale = Math.min(380 / (state.width * 72), 180 / (state.height * 72));
       const width = state.width * 72 * scale;
       const height = state.height * 72 * scale;
 
       preview.style.width = `${width}px`;
       preview.style.height = `${height}px`;
-      preview.style.background = state.color.bg;
-      preview.className = `label-preview ${state.corners} ${state.color.bg === '#FFFFFF' ? 'white-label' : ''}`;
+      preview.style.background = state.labelColor;
+      
+      const needsOutline = state.labelColor === '#FFFFFF' || state.labelColor.toLowerCase() === '#ffffff';
+      preview.className = `label-preview ${state.corners} ${needsOutline ? 'has-outline' : ''}`;
 
       preview.innerHTML = state.textLines.map((line, index) => {
         if (!line.text) return '';
         const fontSize = line.fontSize * scale;
         const fontFamily = state.font === 'Source Sans 3' ? "'Source Sans 3', sans-serif" : `${state.font}, sans-serif`;
-        return `<div class="text-line" data-index="${index}" style="left:${line.x}%;top:${line.y}%;transform:translate(-50%,-50%);font-family:${fontFamily};font-size:${fontSize}px;color:${state.color.text};">${escapeHtml(line.text)}</div>`;
+        return `<div class="text-line" data-index="${index}" style="left:${line.x}%;top:${line.y}%;transform:translate(-50%,-50%);font-family:${fontFamily};font-size:${fontSize}px;color:${state.textColor};">${escapeHtml(line.text)}</div>`;
       }).join('');
 
       setupDragHandlers();
-      const sizeLabel = getSizeLabel();
-      document.getElementById('previewHeader').textContent = `${sizeLabel} · ${state.width}" × ${state.height}" — Drag text to reposition`;
+      document.getElementById('previewHeader').textContent = `${getSizeLabel()} · ${state.width}" × ${state.height}" — Drag text to reposition`;
     }
 
     function getSizeLabel() {
@@ -383,28 +493,22 @@
       const preview = document.getElementById('labelPreview');
       preview.querySelectorAll('.text-line').forEach(el => {
         let isDragging = false, startX, startY, startLeft, startTop;
-
         const onStart = (clientX, clientY) => {
           isDragging = true; el.classList.add('dragging');
           startX = clientX; startY = clientY;
           const index = parseInt(el.dataset.index);
           startLeft = state.textLines[index].x; startTop = state.textLines[index].y;
         };
-
         const onMove = (clientX, clientY) => {
           if (!isDragging) return;
           const rect = preview.getBoundingClientRect();
-          const deltaX = ((clientX - startX) / rect.width) * 100;
-          const deltaY = ((clientY - startY) / rect.height) * 100;
           const index = parseInt(el.dataset.index);
-          state.textLines[index].x = Math.max(5, Math.min(95, startLeft + deltaX));
-          state.textLines[index].y = Math.max(10, Math.min(90, startTop + deltaY));
+          state.textLines[index].x = Math.max(5, Math.min(95, startLeft + ((clientX - startX) / rect.width) * 100));
+          state.textLines[index].y = Math.max(10, Math.min(90, startTop + ((clientY - startY) / rect.height) * 100));
           el.style.left = `${state.textLines[index].x}%`;
           el.style.top = `${state.textLines[index].y}%`;
         };
-
         const onEnd = () => { if (isDragging) { isDragging = false; el.classList.remove('dragging'); } };
-
         el.addEventListener('mousedown', (e) => { onStart(e.clientX, e.clientY); e.preventDefault(); });
         document.addEventListener('mousemove', (e) => onMove(e.clientX, e.clientY));
         document.addEventListener('mouseup', onEnd);
@@ -414,6 +518,11 @@
       });
     }
 
+    function getColorName(hex) {
+      const color = COLORS.find(c => c.hex.toLowerCase() === hex.toLowerCase());
+      return color ? color.name : hex;
+    }
+
     function addToList() {
       if (!state.textLines.some(line => line.text.trim())) {
         showToast('Please enter at least one line of text', 'error'); return;
@@ -421,7 +530,8 @@
       state.savedLabels.push({
         id: Date.now(), height: state.height, width: state.width, font: state.font,
         textLines: JSON.parse(JSON.stringify(state.textLines)),
-        color: { ...state.color }, corners: state.corners, quantity: state.quantity
+        labelColor: state.labelColor, textColor: state.textColor,
+        corners: state.corners, quantity: state.quantity
       });
       saveToStorage(); updateSavedLabelsList(true); updateSubmitButton();
       createConfetti();
@@ -441,12 +551,13 @@
         const primaryText = label.textLines.find(l => l.text)?.text || 'Empty';
         const isLast = idx === state.savedLabels.length - 1;
         const fontFamily = label.font === 'Source Sans 3' ? "'Source Sans 3', sans-serif" : `${label.font}, sans-serif`;
+        const needsOutline = label.labelColor === '#FFFFFF' || label.labelColor.toLowerCase() === '#ffffff';
         return `
           <div class="saved-label-item ${justAdded && isLast ? 'just-added' : ''}">
-            <div class="saved-label-preview ${label.color.bg === '#FFFFFF' ? 'white-preview' : ''}" style="background:${label.color.bg};color:${label.color.text};font-family:${fontFamily}">${escapeHtml(primaryText.substring(0, 10))}</div>
+            <div class="saved-label-preview ${needsOutline ? 'has-outline' : ''}" style="background:${label.labelColor};color:${label.textColor};font-family:${fontFamily}">${escapeHtml(primaryText.substring(0, 8))}</div>
             <div class="saved-label-info">
               <div class="saved-label-text">${escapeHtml(primaryText)}</div>
-              <div class="saved-label-details">${label.width}" × ${label.height}" · ${label.color.name}</div>
+              <div class="saved-label-details">${label.width}" × ${label.height}" · ${getColorName(label.labelColor)}/${getColorName(label.textColor)}</div>
             </div>
             <span class="saved-label-qty">×${label.quantity}</span>
             <button class="btn-remove-saved" onclick="removeLabel(${label.id})">×</button>

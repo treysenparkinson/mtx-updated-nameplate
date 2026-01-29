@@ -75,6 +75,11 @@
     .drag-instruction { text-align: center; margin-bottom: 16px; }
     .drag-instruction-badge { display: inline-flex; align-items: center; gap: 6px; background: #dbeafe; color: #1d4ed8; padding: 8px 16px; border-radius: 20px; font-size: 12px; font-weight: 500; }
     .drag-instruction-badge svg { width: 16px; height: 16px; }
+    .zoom-controls { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 16px; }
+    .zoom-btn { width: 32px; height: 32px; border: 1px solid #e2e8f0; border-radius: 6px; background: white; font-size: 18px; font-weight: 600; color: #475569; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.15s; }
+    .zoom-btn:hover { background: #f1f5f9; border-color: #cbd5e1; }
+    .zoom-btn:active { background: #e2e8f0; }
+    .zoom-level { font-size: 12px; font-weight: 600; color: #64748b; min-width: 45px; text-align: center; }
     .preview-wrapper { flex: 1; display: flex; align-items: center; justify-content: center; min-height: 280px; position: relative; overflow: auto; }
     
     .label-container { position: relative; }
@@ -246,12 +251,17 @@
 
       <div class="preview-column">
         <div class="preview-card">
-          <div class="preview-header" id="previewHeader">Standard · 4" × 1"</div>
+          <div class="preview-header" id="previewHeader">Custom · 7" × 2"</div>
           <div class="drag-instruction">
             <span class="drag-instruction-badge">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 9l-3 3 3 3M9 5l3-3 3 3M15 19l-3 3-3-3M19 9l3 3-3 3M2 12h20M12 2v20"/></svg>
               Drag text to reposition
             </span>
+          </div>
+          <div class="zoom-controls">
+            <button class="zoom-btn" id="zoomOut" title="Zoom out">−</button>
+            <span class="zoom-level" id="zoomLevel">100%</span>
+            <button class="zoom-btn" id="zoomIn" title="Zoom in">+</button>
           </div>
           <div class="preview-wrapper">
             <div class="label-container">
@@ -324,7 +334,8 @@
       height: 2, width: 7, font: 'Calibri',
       textLines: [{ text: '', fontSize: 32, x: 50, y: 50 }],
       labelColor: '#22c55e', textColor: '#FFFFFF',
-      corners: 'squared', quantity: 1, savedLabels: []
+      corners: 'squared', quantity: 1, savedLabels: [],
+      zoom: 100
     };
 
     const COLORS = [
@@ -504,6 +515,22 @@
       document.getElementById('btnGoHome').addEventListener('click', () => {
         window.location.href = 'https://www.matrixpci.com';
       });
+      
+      // Zoom controls
+      document.getElementById('zoomIn').addEventListener('click', () => {
+        if (state.zoom < 200) {
+          state.zoom += 25;
+          updatePreview();
+          document.getElementById('zoomLevel').textContent = state.zoom + '%';
+        }
+      });
+      document.getElementById('zoomOut').addEventListener('click', () => {
+        if (state.zoom > 25) {
+          state.zoom -= 25;
+          updatePreview();
+          document.getElementById('zoomLevel').textContent = state.zoom + '%';
+        }
+      });
     }
 
     function resetPage() {
@@ -511,6 +538,7 @@
       state.textLines = [{ text: '', fontSize: 32, x: 50, y: 50 }];
       state.labelColor = '#22c55e'; state.textColor = '#FFFFFF';
       state.corners = 'squared'; state.quantity = 1; state.savedLabels = [];
+      state.zoom = 100;
       
       document.getElementById('labelHeight').value = 2;
       document.getElementById('labelWidth').value = 7;
@@ -518,6 +546,7 @@
       document.getElementById('quantity').value = 1;
       document.getElementById('refId').value = '';
       document.getElementById('notes').value = '';
+      document.getElementById('zoomLevel').textContent = '100%';
       
       document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'));
       document.querySelectorAll('.corner-btn').forEach(b => b.classList.remove('active'));
@@ -541,9 +570,10 @@
     function updatePreview() {
       const preview = document.getElementById('labelPreview');
       
-      // Fixed scale: bigger label = bigger preview (not scaled down)
-      const width = state.width * BASE_PPI;
-      const height = state.height * BASE_PPI;
+      // Fixed scale with zoom: bigger label = bigger preview
+      const zoomFactor = state.zoom / 100;
+      const width = state.width * BASE_PPI * zoomFactor;
+      const height = state.height * BASE_PPI * zoomFactor;
 
       preview.style.width = `${width}px`;
       preview.style.height = `${height}px`;
@@ -553,7 +583,7 @@
       preview.className = `label-preview ${state.corners} ${needsOutline ? 'has-outline' : ''}`;
 
       // Text scale factor - text size relative to label size
-      const textScale = BASE_PPI / 72; // Convert pt to pixels at our PPI
+      const textScale = (BASE_PPI / 72) * zoomFactor; // Convert pt to pixels at our PPI with zoom
 
       let html = `<div class="guide-line center-h" id="guideH"></div><div class="guide-line center-v" id="guideV"></div>`;
       

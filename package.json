@@ -1,0 +1,17 @@
+{
+  "name": "mtx-nameplate-creator-v2",
+  "version": "1.0.0",
+  "description": "Nameplate Label Creator for Matrix Systems",
+  "type": "module",
+  "scripts": {
+    "dev": "netlify dev"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.525.0",
+    "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "@netlify/functions": "^2.6.0",
+    "typescript": "^5.3.3"
+  }
+}

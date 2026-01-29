@@ -17,12 +17,10 @@
     .card-title { font-size: 11px; font-weight: 700; color: #64748b; margin-bottom: 14px; text-transform: uppercase; letter-spacing: 0.8px; }
     .controls-column { display: flex; flex-direction: column; gap: 16px; }
 
-    /* Toggle Tabs */
     .toggle-tabs { display: flex; background: #f1f5f9; border-radius: 8px; padding: 4px; margin-bottom: 14px; }
     .toggle-tab { flex: 1; padding: 8px 12px; border: none; background: transparent; font-size: 12px; font-weight: 600; font-family: 'Montserrat', sans-serif; color: #64748b; cursor: pointer; border-radius: 6px; transition: all 0.2s; }
     .toggle-tab.active { background: white; color: #1a365d; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
 
-    /* Size Presets */
     .size-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
     .size-btn { padding: 10px 8px; border: 2px solid #e2e8f0; border-radius: 8px; background: white; cursor: pointer; transition: all 0.2s; text-align: center; font-family: 'Montserrat', sans-serif; }
     .size-btn:hover { border-color: #cbd5e1; }
@@ -30,21 +28,18 @@
     .size-btn-label { font-size: 12px; font-weight: 600; color: #1a365d; display: block; }
     .size-btn-dims { font-size: 10px; color: #64748b; margin-top: 2px; }
 
-    /* Custom Size */
     .custom-size-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
     .custom-size-input { position: relative; }
     .custom-size-input label { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 11px; font-weight: 500; color: #64748b; pointer-events: none; }
-    .custom-size-input input { width: 100%; padding: 12px 12px 12px 55px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px; font-family: 'Montserrat', sans-serif; }
+    .custom-size-input input { width: 100%; padding: 12px 12px 12px 58px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px; font-family: 'Montserrat', sans-serif; }
     .custom-size-input input:focus { outline: none; border-color: #3b82f6; }
 
     .size-content, .color-content { display: none; }
     .size-content.active, .color-content.active { display: block; }
 
-    /* Form Elements */
     .form-select { width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 13px; font-family: 'Montserrat', sans-serif; background: white; cursor: pointer; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2364748b' d='M6 8L1 3h10z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; }
     .form-select:focus { outline: none; border-color: #3b82f6; }
 
-    /* Text Lines */
     .text-lines-container { display: flex; flex-direction: column; gap: 8px; }
     .text-line-row { display: grid; grid-template-columns: 1fr 70px auto; gap: 8px; align-items: center; }
     .text-line-row input { width: 100%; padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 13px; font-family: 'Montserrat', sans-serif; }
@@ -57,7 +52,6 @@
     .btn-add-line { width: 100%; padding: 10px; background: #f8fafc; color: #64748b; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 12px; font-weight: 500; font-family: 'Montserrat', sans-serif; cursor: pointer; transition: all 0.2s; margin-top: 4px; }
     .btn-add-line:hover { background: #f1f5f9; border-color: #cbd5e1; }
 
-    /* Color Palette */
     .color-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
     .color-btn { aspect-ratio: 1; border: 3px solid transparent; border-radius: 8px; cursor: pointer; transition: all 0.2s; }
     .color-btn:hover { transform: scale(1.05); }
@@ -70,23 +64,33 @@
     .color-preview-label { font-size: 10px; color: #64748b; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
     .color-preview-swatch { height: 28px; border-radius: 6px; border: 1px solid #e2e8f0; }
 
-    /* Corner Options */
     .corner-options { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
     .corner-btn { padding: 10px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 12px; font-weight: 500; font-family: 'Montserrat', sans-serif; background: white; cursor: pointer; transition: all 0.2s; color: #475569; }
     .corner-btn:hover { border-color: #cbd5e1; }
     .corner-btn.active { border-color: #3b82f6; background: #eff6ff; color: #1d4ed8; }
 
-    /* Preview Column */
     .preview-column { display: flex; flex-direction: column; }
     .preview-header { text-align: center; font-size: 12px; color: #64748b; margin-bottom: 12px; }
     .preview-wrapper { flex: 1; display: flex; align-items: center; justify-content: center; background: white; border-radius: 12px; border: 1px solid #e2e8f0; padding: 40px; min-height: 380px; }
-    .label-preview { position: relative; display: flex; align-items: center; justify-content: center; cursor: default; overflow: hidden; transition: all 0.3s ease; }
+    
+    .label-container { position: relative; }
+    .label-preview { position: relative; display: flex; align-items: center; justify-content: center; cursor: default; overflow: visible; transition: all 0.3s ease; }
     .label-preview.rounded { border-radius: 8px; }
     .label-preview.squared { border-radius: 0; }
     .label-preview.has-outline { box-shadow: 0 0 0 2px #d1d5db; }
-    .text-line { position: absolute; cursor: move; user-select: none; white-space: nowrap; transition: opacity 0.15s; }
+    
+    /* Guide Lines */
+    .guide-line { position: absolute; background: #3b82f6; opacity: 0; transition: opacity 0.15s; pointer-events: none; z-index: 10; }
+    .guide-line.visible { opacity: 0.7; }
+    .guide-line.center-h { height: 1px; width: calc(100% + 40px); left: -20px; top: 50%; transform: translateY(-50%); }
+    .guide-line.center-v { width: 1px; height: calc(100% + 40px); top: -20px; left: 50%; transform: translateX(-50%); }
+    .guide-line.align-h { height: 1px; width: calc(100% + 20px); left: -10px; background: #10b981; }
+    .guide-line.align-v { width: 1px; height: calc(100% + 20px); top: -10px; background: #10b981; }
+    
+    .text-line { position: absolute; cursor: move; user-select: none; white-space: nowrap; transition: opacity 0.15s; z-index: 5; }
     .text-line:hover { opacity: 0.7; }
-    .text-line.dragging { opacity: 0.5; }
+    .text-line.dragging { opacity: 0.5; z-index: 20; }
+    
     .preview-footer { text-align: center; margin-top: 12px; }
     .reset-positions { font-size: 11px; color: #64748b; background: none; border: none; cursor: pointer; text-decoration: underline; font-family: 'Montserrat', sans-serif; }
     .reset-positions:hover { color: #3b82f6; }
@@ -96,7 +100,6 @@
     .btn-add { padding: 10px 28px; background: #10b981; color: white; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; font-family: 'Montserrat', sans-serif; cursor: pointer; transition: all 0.2s; }
     .btn-add:hover { background: #059669; transform: translateY(-1px); }
 
-    /* Sidebar */
     .sidebar { display: flex; flex-direction: column; gap: 16px; }
     .saved-labels-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
     .saved-labels-title { font-size: 14px; font-weight: 600; color: #1a365d; }
@@ -115,7 +118,6 @@
     .btn-remove-saved:hover { color: #dc2626; background: #fee2e2; }
     .empty-state { text-align: center; padding: 28px 16px; color: #94a3b8; font-size: 12px; }
 
-    /* Submit */
     .submit-card { display: flex; flex-direction: column; gap: 10px; }
     .submit-input { width: 100%; padding: 11px 12px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 13px; font-family: 'Montserrat', sans-serif; }
     .submit-input:focus { outline: none; border-color: #3b82f6; }
@@ -141,10 +143,9 @@
   <div class="container">
     <div class="main-grid">
       <div class="controls-column">
-        <!-- Size Card -->
         <div class="card">
           <div class="card-title">Label Size</div>
-          <div class="toggle-tabs">
+          <div class="toggle-tabs" id="sizeTabs">
             <button class="toggle-tab active" data-target="presets">Presets</button>
             <button class="toggle-tab" data-target="custom">Custom</button>
           </div>
@@ -158,13 +159,12 @@
           </div>
           <div id="sizeCustom" class="size-content">
             <div class="custom-size-row">
-              <div class="custom-size-input"><label>Width</label><input type="number" id="labelWidth" value="4" step="0.125" min="0.5" max="24"></div>
               <div class="custom-size-input"><label>Height</label><input type="number" id="labelHeight" value="1" step="0.125" min="0.25" max="12"></div>
+              <div class="custom-size-input"><label>Width</label><input type="number" id="labelWidth" value="4" step="0.125" min="0.5" max="24"></div>
             </div>
           </div>
         </div>
 
-        <!-- Font Card -->
         <div class="card">
           <div class="card-title">Font</div>
           <select id="fontSelect" class="form-select">
@@ -178,17 +178,15 @@
           </select>
         </div>
 
-        <!-- Text Lines Card -->
         <div class="card">
           <div class="card-title">Text Lines</div>
           <div id="textLinesContainer" class="text-lines-container"></div>
           <button id="btnAddLine" class="btn-add-line">+ Add Line</button>
         </div>
 
-        <!-- Color Card -->
-        <div class="card">
+        <div class="card" id="colorCard">
           <div class="card-title">Colors</div>
-          <div class="toggle-tabs">
+          <div class="toggle-tabs" id="colorTabs">
             <button class="toggle-tab active" data-target="labelColor">Label</button>
             <button class="toggle-tab" data-target="textColor">Text</button>
           </div>
@@ -210,7 +208,6 @@
           </div>
         </div>
 
-        <!-- Corners Card -->
         <div class="card">
           <div class="card-title">Corners</div>
           <div class="corner-options">
@@ -220,11 +217,15 @@
         </div>
       </div>
 
-      <!-- Preview Column -->
       <div class="preview-column">
         <div class="preview-header" id="previewHeader">Standard · 4" × 1" — Drag text to reposition</div>
         <div class="preview-wrapper">
-          <div id="labelPreview" class="label-preview squared"></div>
+          <div class="label-container">
+            <div id="labelPreview" class="label-preview squared">
+              <div class="guide-line center-h" id="guideH"></div>
+              <div class="guide-line center-v" id="guideV"></div>
+            </div>
+          </div>
         </div>
         <div class="preview-footer">
           <button class="reset-positions" id="btnResetPositions">Reset text positions</button>
@@ -235,7 +236,6 @@
         </div>
       </div>
 
-      <!-- Sidebar -->
       <div class="sidebar">
         <div class="card">
           <div class="saved-labels-header">
@@ -262,25 +262,20 @@
   <div id="toast" class="toast"></div>
 
   <script>
+    const SNAP_THRESHOLD = 3;
     const state = {
       height: 1, width: 4, font: 'Calibri',
       textLines: [{ text: '', fontSize: 20, x: 50, y: 50 }],
-      labelColor: '#22c55e',
-      textColor: '#FFFFFF',
+      labelColor: '#22c55e', textColor: '#FFFFFF',
       corners: 'squared', quantity: 1, savedLabels: []
     };
 
     const COLORS = [
-      { name: 'Green', hex: '#22c55e' },
-      { name: 'Red', hex: '#ef4444' },
-      { name: 'Yellow', hex: '#eab308' },
-      { name: 'Blue', hex: '#3b82f6' },
-      { name: 'Black', hex: '#1a1a1a' },
-      { name: 'White', hex: '#FFFFFF' },
-      { name: 'Orange', hex: '#f97316' },
-      { name: 'Gray', hex: '#6b7280' }
+      { name: 'Green', hex: '#22c55e' }, { name: 'Red', hex: '#ef4444' },
+      { name: 'Yellow', hex: '#eab308' }, { name: 'Blue', hex: '#3b82f6' },
+      { name: 'Black', hex: '#1a1a1a' }, { name: 'White', hex: '#FFFFFF' },
+      { name: 'Orange', hex: '#f97316' }, { name: 'Gray', hex: '#6b7280' }
     ];
-
     const FONT_SIZES = [8, 10, 12, 14, 16, 18, 20, 22, 24, 28, 32, 36, 42, 48, 56, 64, 72];
 
     document.addEventListener('DOMContentLoaded', () => {
@@ -290,8 +285,8 @@
     });
 
     function loadFromStorage() {
-      const savedLabels = localStorage.getItem('nameplateLabelsV3');
-      const contact = localStorage.getItem('nameplateContactV3');
+      const savedLabels = localStorage.getItem('nameplateLabelsV4');
+      const contact = localStorage.getItem('nameplateContactV4');
       if (savedLabels) state.savedLabels = JSON.parse(savedLabels);
       if (contact) {
         const { name, email } = JSON.parse(contact);
@@ -301,17 +296,17 @@
     }
 
     function saveToStorage() {
-      localStorage.setItem('nameplateLabelsV3', JSON.stringify(state.savedLabels));
-      localStorage.setItem('nameplateContactV3', JSON.stringify({
+      localStorage.setItem('nameplateLabelsV4', JSON.stringify(state.savedLabels));
+      localStorage.setItem('nameplateContactV4', JSON.stringify({
         name: document.getElementById('contactName').value,
         email: document.getElementById('contactEmail').value
       }));
     }
 
     function initSizeToggle() {
-      document.querySelectorAll('.card:first-child .toggle-tab').forEach(tab => {
+      document.querySelectorAll('#sizeTabs .toggle-tab').forEach(tab => {
         tab.addEventListener('click', () => {
-          document.querySelectorAll('.card:first-child .toggle-tab').forEach(t => t.classList.remove('active'));
+          document.querySelectorAll('#sizeTabs .toggle-tab').forEach(t => t.classList.remove('active'));
           tab.classList.add('active');
           document.getElementById('sizePresets').classList.toggle('active', tab.dataset.target === 'presets');
           document.getElementById('sizeCustom').classList.toggle('active', tab.dataset.target === 'custom');
@@ -320,10 +315,9 @@
     }
 
     function initColorToggle() {
-      const colorCard = document.querySelector('.card:has(#labelColorPalette)');
-      colorCard.querySelectorAll('.toggle-tab').forEach(tab => {
+      document.querySelectorAll('#colorTabs .toggle-tab').forEach(tab => {
         tab.addEventListener('click', () => {
-          colorCard.querySelectorAll('.toggle-tab').forEach(t => t.classList.remove('active'));
+          document.querySelectorAll('#colorTabs .toggle-tab').forEach(t => t.classList.remove('active'));
           tab.classList.add('active');
           document.getElementById('labelColorContent').classList.toggle('active', tab.dataset.target === 'labelColor');
           document.getElementById('textColorContent').classList.toggle('active', tab.dataset.target === 'textColor');
@@ -467,16 +461,20 @@
       preview.style.height = `${height}px`;
       preview.style.background = state.labelColor;
       
-      const needsOutline = state.labelColor === '#FFFFFF' || state.labelColor.toLowerCase() === '#ffffff';
+      const needsOutline = state.labelColor.toUpperCase() === '#FFFFFF';
       preview.className = `label-preview ${state.corners} ${needsOutline ? 'has-outline' : ''}`;
 
-      preview.innerHTML = state.textLines.map((line, index) => {
-        if (!line.text) return '';
+      // Keep guide lines, add text
+      let html = `<div class="guide-line center-h" id="guideH"></div><div class="guide-line center-v" id="guideV"></div>`;
+      
+      state.textLines.forEach((line, index) => {
+        if (!line.text) return;
         const fontSize = line.fontSize * scale;
         const fontFamily = state.font === 'Source Sans 3' ? "'Source Sans 3', sans-serif" : `${state.font}, sans-serif`;
-        return `<div class="text-line" data-index="${index}" style="left:${line.x}%;top:${line.y}%;transform:translate(-50%,-50%);font-family:${fontFamily};font-size:${fontSize}px;color:${state.textColor};">${escapeHtml(line.text)}</div>`;
-      }).join('');
-
+        html += `<div class="text-line" data-index="${index}" style="left:${line.x}%;top:${line.y}%;transform:translate(-50%,-50%);font-family:${fontFamily};font-size:${fontSize}px;color:${state.textColor};">${escapeHtml(line.text)}</div>`;
+      });
+      
+      preview.innerHTML = html;
       setupDragHandlers();
       document.getElementById('previewHeader').textContent = `${getSizeLabel()} · ${state.width}" × ${state.height}" — Drag text to reposition`;
     }
@@ -491,24 +489,65 @@
 
     function setupDragHandlers() {
       const preview = document.getElementById('labelPreview');
+      const guideH = document.getElementById('guideH');
+      const guideV = document.getElementById('guideV');
+      
       preview.querySelectorAll('.text-line').forEach(el => {
         let isDragging = false, startX, startY, startLeft, startTop;
+        
         const onStart = (clientX, clientY) => {
-          isDragging = true; el.classList.add('dragging');
-          startX = clientX; startY = clientY;
+          isDragging = true;
+          el.classList.add('dragging');
+          startX = clientX;
+          startY = clientY;
           const index = parseInt(el.dataset.index);
-          startLeft = state.textLines[index].x; startTop = state.textLines[index].y;
+          startLeft = state.textLines[index].x;
+          startTop = state.textLines[index].y;
         };
+        
         const onMove = (clientX, clientY) => {
           if (!isDragging) return;
           const rect = preview.getBoundingClientRect();
           const index = parseInt(el.dataset.index);
-          state.textLines[index].x = Math.max(5, Math.min(95, startLeft + ((clientX - startX) / rect.width) * 100));
-          state.textLines[index].y = Math.max(10, Math.min(90, startTop + ((clientY - startY) / rect.height) * 100));
+          
+          let newX = startLeft + ((clientX - startX) / rect.width) * 100;
+          let newY = startTop + ((clientY - startY) / rect.height) * 100;
+          
+          // Snap to center
+          let snappedH = false, snappedV = false;
+          if (Math.abs(newX - 50) < SNAP_THRESHOLD) { newX = 50; snappedV = true; }
+          if (Math.abs(newY - 50) < SNAP_THRESHOLD) { newY = 50; snappedH = true; }
+          
+          // Snap to other text lines
+          state.textLines.forEach((otherLine, otherIndex) => {
+            if (otherIndex === index || !otherLine.text) return;
+            if (Math.abs(newX - otherLine.x) < SNAP_THRESHOLD) { newX = otherLine.x; snappedV = true; }
+            if (Math.abs(newY - otherLine.y) < SNAP_THRESHOLD) { newY = otherLine.y; snappedH = true; }
+          });
+          
+          // Show/hide guides
+          guideH.classList.toggle('visible', snappedH);
+          guideV.classList.toggle('visible', snappedV);
+          if (snappedH && newY !== 50) guideH.style.top = `${newY}%`;
+          else guideH.style.top = '50%';
+          if (snappedV && newX !== 50) guideV.style.left = `${newX}%`;
+          else guideV.style.left = '50%';
+          
+          state.textLines[index].x = Math.max(5, Math.min(95, newX));
+          state.textLines[index].y = Math.max(10, Math.min(90, newY));
           el.style.left = `${state.textLines[index].x}%`;
           el.style.top = `${state.textLines[index].y}%`;
         };
-        const onEnd = () => { if (isDragging) { isDragging = false; el.classList.remove('dragging'); } };
+        
+        const onEnd = () => {
+          if (isDragging) {
+            isDragging = false;
+            el.classList.remove('dragging');
+            guideH.classList.remove('visible');
+            guideV.classList.remove('visible');
+          }
+        };
+        
         el.addEventListener('mousedown', (e) => { onStart(e.clientX, e.clientY); e.preventDefault(); });
         document.addEventListener('mousemove', (e) => onMove(e.clientX, e.clientY));
         document.addEventListener('mouseup', onEnd);
@@ -551,7 +590,7 @@
         const primaryText = label.textLines.find(l => l.text)?.text || 'Empty';
         const isLast = idx === state.savedLabels.length - 1;
         const fontFamily = label.font === 'Source Sans 3' ? "'Source Sans 3', sans-serif" : `${label.font}, sans-serif`;
-        const needsOutline = label.labelColor === '#FFFFFF' || label.labelColor.toLowerCase() === '#ffffff';
+        const needsOutline = label.labelColor.toUpperCase() === '#FFFFFF';
         return `
           <div class="saved-label-item ${justAdded && isLast ? 'just-added' : ''}">
             <div class="saved-label-preview ${needsOutline ? 'has-outline' : ''}" style="background:${label.labelColor};color:${label.textColor};font-family:${fontFamily}">${escapeHtml(primaryText.substring(0, 8))}</div>
@@ -579,11 +618,10 @@
         document.body.appendChild(c);
         const angle = (Math.random()-0.5)*Math.PI, velocity = Math.random()*300+200;
         const vx = Math.cos(angle)*velocity, vy = -Math.abs(Math.sin(angle)*velocity)-100;
-        let x=0, y=0; const startTime = performance.now();
+        const startTime = performance.now();
         (function animate(time) {
           const elapsed = (time-startTime)/1000;
-          x = vx*elapsed; y = vy*elapsed + 400*elapsed*elapsed;
-          c.style.transform = `translate(${x}px,${y}px) rotate(${elapsed*360}deg)`;
+          c.style.transform = `translate(${vx*elapsed}px,${vy*elapsed + 400*elapsed*elapsed}px) rotate(${elapsed*360}deg)`;
           c.style.opacity = Math.max(0, 1-elapsed/1.5);
           elapsed < 1.5 ? requestAnimationFrame(animate) : c.remove();
         })(performance.now());
@@ -591,8 +629,7 @@
     }
 
     function updateSubmitButton() {
-      const refId = document.getElementById('refId').value.trim();
-      document.getElementById('btnSubmit').disabled = !refId || state.savedLabels.length === 0;
+      document.getElementById('btnSubmit').disabled = !document.getElementById('refId').value.trim() || state.savedLabels.length === 0;
     }
 
     async function submitOrder() {
@@ -610,20 +647,16 @@
 
       try {
         const response = await fetch('/api/submit-order', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ refId, contactName, contactEmail, notes, labels: state.savedLabels })
         });
-        const result = await response.json();
         if (response.ok) {
           showToast(`Quote request submitted! Reference: ${refId}`, 'success');
           state.savedLabels = []; saveToStorage(); updateSavedLabelsList();
-          document.getElementById('refId').value = '';
-          document.getElementById('notes').value = '';
+          document.getElementById('refId').value = ''; document.getElementById('notes').value = '';
           updateSubmitButton();
-        } else throw new Error(result.error || 'Submission failed');
+        } else throw new Error('Submission failed');
       } catch (error) {
-        console.error('Submit error:', error);
         showToast('Failed to submit. Please try again.', 'error');
       } finally {
         btn.disabled = false; btn.textContent = 'Submit for Quote'; updateSubmitButton();

@@ -4,849 +4,230 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Nameplate Label Creator | Matrix Systems</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      background: #f0f4f8;
-      min-height: 100vh;
-      color: #1a202c;
-    }
-
-    .container {
-      max-width: 1400px;
-      margin: 0 auto;
-      padding: 24px;
-    }
-
-    .header {
-      text-align: center;
-      margin-bottom: 32px;
-    }
-
-    .header h1 {
-      font-size: 28px;
-      font-weight: 700;
-      color: #1a365d;
-      margin-bottom: 8px;
-    }
-
-    .header p {
-      color: #64748b;
-      font-size: 14px;
-    }
-
-    .main-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr 320px;
-      gap: 24px;
-    }
-
-    @media (max-width: 1200px) {
-      .main-grid {
-        grid-template-columns: 1fr 1fr;
-      }
-      .sidebar {
-        grid-column: span 2;
-      }
-    }
-
-    @media (max-width: 768px) {
-      .main-grid {
-        grid-template-columns: 1fr;
-      }
-      .sidebar {
-        grid-column: span 1;
-      }
-    }
-
-    .card {
-      background: white;
-      border-radius: 12px;
-      padding: 24px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    }
-
-    .card-title {
-      font-size: 18px;
-      font-weight: 600;
-      color: #1a365d;
-      margin-bottom: 20px;
-    }
-
-    /* Preview Section */
-    .preview-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .preview-wrapper {
-      width: 100%;
-      min-height: 200px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: #f8fafc;
-      border: 2px dashed #cbd5e1;
-      border-radius: 8px;
-      padding: 24px;
-      margin-bottom: 16px;
-    }
-
-    .label-preview {
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      cursor: default;
-      overflow: hidden;
-      transition: all 0.2s ease;
-    }
-
-    .label-preview.rounded {
-      border-radius: 8px;
-    }
-
-    .label-preview.squared {
-      border-radius: 0;
-    }
-
-    .text-line {
-      position: absolute;
-      cursor: move;
-      user-select: none;
-      white-space: nowrap;
-      transition: opacity 0.2s;
-    }
-
-    .text-line:hover {
-      opacity: 0.8;
-    }
-
-    .text-line.dragging {
-      opacity: 0.6;
-    }
-
-    .preview-dimensions {
-      font-size: 13px;
-      color: #64748b;
-      text-align: center;
-    }
-
-    .quantity-row {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-top: 16px;
-      padding-top: 16px;
-      border-top: 1px solid #e2e8f0;
-    }
-
-    .quantity-row label {
-      font-size: 14px;
-      font-weight: 500;
-      color: #475569;
-    }
-
-    .quantity-input {
-      width: 80px;
-      padding: 8px 12px;
-      border: 1px solid #d1d5db;
-      border-radius: 6px;
-      font-size: 14px;
-      text-align: center;
-    }
-
-    .btn-add {
-      flex: 1;
-      padding: 10px 20px;
-      background: #2563eb;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      font-size: 14px;
-      font-weight: 500;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-
-    .btn-add:hover {
-      background: #1d4ed8;
-    }
-
-    /* Controls Section */
-    .form-group {
-      margin-bottom: 20px;
-    }
-
-    .form-group label {
-      display: block;
-      font-size: 13px;
-      font-weight: 500;
-      color: #475569;
-      margin-bottom: 6px;
-    }
-
-    .form-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-
-    .form-input {
-      width: 100%;
-      padding: 10px 12px;
-      border: 1px solid #d1d5db;
-      border-radius: 6px;
-      font-size: 14px;
-      transition: border-color 0.2s;
-    }
-
-    .form-input:focus {
-      outline: none;
-      border-color: #2563eb;
-    }
-
-    .form-select {
-      width: 100%;
-      padding: 10px 12px;
-      border: 1px solid #d1d5db;
-      border-radius: 6px;
-      font-size: 14px;
-      background: white;
-      cursor: pointer;
-    }
-
-    /* Text Lines Section */
-    .text-lines-container {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .text-line-row {
-      display: flex;
-      gap: 8px;
-      align-items: center;
-      padding: 12px;
-      background: #f8fafc;
-      border-radius: 8px;
-      border: 1px solid #e2e8f0;
-    }
-
-    .text-line-row input {
-      flex: 1;
-      padding: 8px 12px;
-      border: 1px solid #d1d5db;
-      border-radius: 6px;
-      font-size: 14px;
-    }
-
-    .text-line-row select {
-      width: 80px;
-      padding: 8px;
-      border: 1px solid #d1d5db;
-      border-radius: 6px;
-      font-size: 13px;
-      background: white;
-    }
-
-    .btn-remove-line {
-      padding: 6px 10px;
-      background: #fee2e2;
-      color: #dc2626;
-      border: none;
-      border-radius: 6px;
-      font-size: 13px;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-
-    .btn-remove-line:hover {
-      background: #fecaca;
-    }
-
-    .btn-add-line {
-      padding: 10px;
-      background: #f1f5f9;
-      color: #475569;
-      border: 1px dashed #cbd5e1;
-      border-radius: 6px;
-      font-size: 14px;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    .btn-add-line:hover {
-      background: #e2e8f0;
-      border-color: #94a3b8;
-    }
-
-    /* Color Palette */
-    .color-palette {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-
-    .color-btn {
-      padding: 8px 14px;
-      border: 2px solid #e2e8f0;
-      border-radius: 6px;
-      font-size: 12px;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    .color-btn:hover {
-      transform: translateY(-1px);
-    }
-
-    .color-btn.active {
-      border-color: #2563eb;
-      box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
-    }
-
-    /* Corner Options */
-    .corner-options {
-      display: flex;
-      gap: 8px;
-    }
-
-    .corner-btn {
-      flex: 1;
-      padding: 10px;
-      border: 2px solid #e2e8f0;
-      border-radius: 6px;
-      font-size: 13px;
-      font-weight: 500;
-      background: white;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    .corner-btn.active {
-      border-color: #2563eb;
-      background: #eff6ff;
-      color: #2563eb;
-    }
-
-    /* Sidebar */
-    .sidebar {
-      display: flex;
-      flex-direction: column;
-      gap: 24px;
-    }
-
-    .saved-labels-list {
-      max-height: 300px;
-      overflow-y: auto;
-    }
-
-    .saved-label-item {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 12px;
-      background: #f8fafc;
-      border-radius: 8px;
-      margin-bottom: 8px;
-    }
-
-    .saved-label-preview {
-      width: 60px;
-      height: 30px;
-      border-radius: 4px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 8px;
-      overflow: hidden;
-    }
-
-    .saved-label-info {
-      flex: 1;
-      min-width: 0;
-    }
-
-    .saved-label-text {
-      font-size: 13px;
-      font-weight: 500;
-      color: #1a365d;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .saved-label-details {
-      font-size: 11px;
-      color: #64748b;
-    }
-
-    .saved-label-qty {
-      font-size: 12px;
-      font-weight: 600;
-      color: #475569;
-      background: #e2e8f0;
-      padding: 4px 8px;
-      border-radius: 4px;
-    }
-
-    .btn-remove-saved {
-      padding: 4px 8px;
-      background: transparent;
-      color: #94a3b8;
-      border: none;
-      cursor: pointer;
-      font-size: 16px;
-    }
-
-    .btn-remove-saved:hover {
-      color: #dc2626;
-    }
-
-    .empty-state {
-      text-align: center;
-      padding: 24px;
-      color: #94a3b8;
-      font-size: 13px;
-    }
-
-    /* Submit Section */
-    .submit-section {
-      margin-top: auto;
-    }
-
-    .form-group-submit {
-      margin-bottom: 16px;
-    }
-
-    .form-group-submit label {
-      display: block;
-      font-size: 13px;
-      font-weight: 500;
-      color: #475569;
-      margin-bottom: 6px;
-    }
-
-    .form-group-submit input {
-      width: 100%;
-      padding: 10px 12px;
-      border: 1px solid #d1d5db;
-      border-radius: 6px;
-      font-size: 14px;
-    }
-
-    .contact-info {
-      font-size: 12px;
-      color: #64748b;
-      margin-bottom: 8px;
-    }
-
-    .btn-change-contact {
-      font-size: 12px;
-      color: #2563eb;
-      background: none;
-      border: none;
-      cursor: pointer;
-      text-decoration: underline;
-    }
-
-    .btn-submit {
-      width: 100%;
-      padding: 14px 20px;
-      background: #2563eb;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      font-size: 16px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-
-    .btn-submit:hover {
-      background: #1d4ed8;
-    }
-
-    .btn-submit:disabled {
-      background: #94a3b8;
-      cursor: not-allowed;
-    }
-
-    /* Templates Section */
-    .templates-list {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .template-item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 10px 12px;
-      background: #f8fafc;
-      border-radius: 6px;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-
-    .template-item:hover {
-      background: #e2e8f0;
-    }
-
-    .template-name {
-      font-size: 13px;
-      font-weight: 500;
-    }
-
-    .btn-template-delete {
-      background: none;
-      border: none;
-      color: #94a3b8;
-      cursor: pointer;
-      padding: 4px;
-    }
-
-    .btn-template-delete:hover {
-      color: #dc2626;
-    }
-
-    .btn-save-template {
-      width: 100%;
-      padding: 10px;
-      background: #10b981;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      font-size: 14px;
-      font-weight: 500;
-      cursor: pointer;
-      margin-top: 12px;
-    }
-
-    .btn-save-template:hover {
-      background: #059669;
-    }
-
-    /* Modal */
-    .modal-overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.5);
-      z-index: 100;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .modal-overlay.active {
-      display: flex;
-    }
-
-    .modal {
-      background: white;
-      border-radius: 12px;
-      padding: 24px;
-      width: 90%;
-      max-width: 400px;
-    }
-
-    .modal h3 {
-      font-size: 18px;
-      margin-bottom: 16px;
-    }
-
-    .modal-buttons {
-      display: flex;
-      gap: 12px;
-      margin-top: 20px;
-    }
-
-    .modal-buttons button {
-      flex: 1;
-      padding: 10px;
-      border-radius: 6px;
-      font-size: 14px;
-      cursor: pointer;
-    }
-
-    .btn-modal-cancel {
-      background: #f1f5f9;
-      border: 1px solid #d1d5db;
-      color: #475569;
-    }
-
-    .btn-modal-confirm {
-      background: #2563eb;
-      border: none;
-      color: white;
-    }
-
-    /* Loading State */
-    .loading {
-      pointer-events: none;
-      opacity: 0.7;
-    }
-
-    .spinner {
-      display: inline-block;
-      width: 16px;
-      height: 16px;
-      border: 2px solid #ffffff;
-      border-top-color: transparent;
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-      margin-right: 8px;
-    }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-
-    /* Toast Notification */
-    .toast {
-      position: fixed;
-      bottom: 24px;
-      right: 24px;
-      padding: 16px 24px;
-      background: #1a365d;
-      color: white;
-      border-radius: 8px;
-      font-size: 14px;
-      transform: translateY(100px);
-      opacity: 0;
-      transition: all 0.3s ease;
-      z-index: 200;
-    }
-
-    .toast.show {
-      transform: translateY(0);
-      opacity: 1;
-    }
-
-    .toast.success {
-      background: #059669;
-    }
-
-    .toast.error {
-      background: #dc2626;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif; background: #f0f4f8; min-height: 100vh; color: #1a202c; }
+    .container { max-width: 1400px; margin: 0 auto; padding: 24px; }
+    .main-grid { display: grid; grid-template-columns: 340px 1fr 280px; gap: 24px; }
+    @media (max-width: 1200px) { .main-grid { grid-template-columns: 1fr 1fr; } .sidebar { grid-column: span 2; } }
+    @media (max-width: 768px) { .main-grid { grid-template-columns: 1fr; } .sidebar { grid-column: span 1; } }
+    .card { background: white; border-radius: 12px; padding: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); border: 1px solid #e2e8f0; }
+    .card-title { font-size: 14px; font-weight: 600; color: #1a365d; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .controls-column { display: flex; flex-direction: column; gap: 20px; }
+    .size-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+    .size-btn { padding: 12px 8px; border: 2px solid #e2e8f0; border-radius: 8px; background: white; cursor: pointer; transition: all 0.2s; text-align: center; font-family: 'Montserrat', sans-serif; }
+    .size-btn:hover { border-color: #cbd5e1; }
+    .size-btn.active { border-color: #3b82f6; background: #eff6ff; }
+    .size-btn-label { font-size: 13px; font-weight: 600; color: #1a365d; display: block; }
+    .size-btn-dims { font-size: 11px; color: #64748b; margin-top: 2px; }
+    .custom-size-section { padding-top: 12px; border-top: 1px solid #e2e8f0; }
+    .custom-size-label { font-size: 12px; font-weight: 500; color: #64748b; margin-bottom: 8px; }
+    .custom-size-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .custom-size-input { position: relative; }
+    .custom-size-input label { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); font-size: 11px; color: #94a3b8; pointer-events: none; }
+    .custom-size-input input { width: 100%; padding: 10px 10px 10px 50px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 14px; font-family: 'Montserrat', sans-serif; }
+    .custom-size-input input:focus { outline: none; border-color: #3b82f6; }
+    .form-group label { display: block; font-size: 12px; font-weight: 600; color: #475569; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.3px; }
+    .form-select { width: 100%; padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px; font-family: 'Montserrat', sans-serif; background: white; cursor: pointer; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2364748b' d='M6 8L1 3h10z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; }
+    .form-select:focus { outline: none; border-color: #3b82f6; }
+    .text-lines-container { display: flex; flex-direction: column; gap: 10px; }
+    .text-line-row { display: flex; gap: 8px; align-items: center; }
+    .text-line-label { font-size: 12px; color: #64748b; width: 50px; flex-shrink: 0; }
+    .text-line-row input { flex: 1; padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 14px; font-family: 'Montserrat', sans-serif; }
+    .text-line-row input:focus { outline: none; border-color: #3b82f6; }
+    .text-line-row input::placeholder { color: #94a3b8; }
+    .text-line-row select { width: 75px; padding: 10px 8px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 13px; font-family: 'Montserrat', sans-serif; background: white; cursor: pointer; }
+    .text-line-row select:focus { outline: none; border-color: #3b82f6; }
+    .btn-remove-line { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; background: #fee2e2; color: #dc2626; border: none; border-radius: 6px; font-size: 18px; cursor: pointer; transition: background 0.2s; flex-shrink: 0; }
+    .btn-remove-line:hover { background: #fecaca; }
+    .btn-add-line { padding: 10px; background: #f8fafc; color: #475569; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 13px; font-family: 'Montserrat', sans-serif; cursor: pointer; transition: all 0.2s; margin-top: 4px; }
+    .btn-add-line:hover { background: #f1f5f9; border-color: #cbd5e1; }
+    .color-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+    .color-btn { aspect-ratio: 1; border: 3px solid transparent; border-radius: 8px; cursor: pointer; transition: all 0.2s; position: relative; }
+    .color-btn:hover { transform: scale(1.05); }
+    .color-btn.active { border-color: #3b82f6; box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3); }
+    .color-btn.white-option { border: 3px solid #d1d5db; }
+    .color-btn.white-option.active { border-color: #3b82f6; }
+    .corner-options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .corner-btn { padding: 12px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 13px; font-weight: 500; font-family: 'Montserrat', sans-serif; background: white; cursor: pointer; transition: all 0.2s; color: #475569; }
+    .corner-btn:hover { border-color: #cbd5e1; }
+    .corner-btn.active { border-color: #3b82f6; background: #eff6ff; color: #1d4ed8; }
+    .preview-column { display: flex; flex-direction: column; }
+    .preview-header { text-align: center; font-size: 13px; color: #64748b; margin-bottom: 16px; }
+    .preview-wrapper { flex: 1; display: flex; align-items: center; justify-content: center; background: white; border-radius: 12px; border: 1px solid #e2e8f0; padding: 40px; min-height: 400px; }
+    .label-preview { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: default; overflow: hidden; transition: all 0.3s ease; }
+    .label-preview.rounded { border-radius: 8px; }
+    .label-preview.squared { border-radius: 0; }
+    .label-preview.white-label { box-shadow: 0 0 0 2px #d1d5db; }
+    .text-line { position: absolute; cursor: move; user-select: none; white-space: nowrap; transition: opacity 0.15s; }
+    .text-line:hover { opacity: 0.7; }
+    .text-line.dragging { opacity: 0.5; }
+    .preview-footer { text-align: center; margin-top: 16px; }
+    .reset-positions { font-size: 12px; color: #64748b; background: none; border: none; cursor: pointer; text-decoration: underline; font-family: 'Montserrat', sans-serif; }
+    .reset-positions:hover { color: #3b82f6; }
+    .add-section { display: flex; align-items: center; justify-content: center; gap: 16px; margin-top: 20px; }
+    .quantity-input { width: 60px; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 16px; font-family: 'Montserrat', sans-serif; text-align: center; }
+    .quantity-input:focus { outline: none; border-color: #3b82f6; }
+    .btn-add { padding: 12px 32px; background: #10b981; color: white; border: none; border-radius: 8px; font-size: 15px; font-weight: 600; font-family: 'Montserrat', sans-serif; cursor: pointer; transition: all 0.2s; }
+    .btn-add:hover { background: #059669; transform: translateY(-1px); }
+    .btn-add:active { transform: translateY(0); }
+    .sidebar { display: flex; flex-direction: column; gap: 20px; }
+    .saved-labels-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+    .saved-labels-title { font-size: 16px; font-weight: 600; color: #1a365d; }
+    .saved-labels-count { font-size: 13px; color: #10b981; font-weight: 500; }
+    .saved-labels-list { display: flex; flex-direction: column; gap: 8px; max-height: 280px; overflow-y: auto; }
+    .saved-label-item { display: flex; align-items: center; gap: 12px; padding: 12px; background: #f8fafc; border-radius: 8px; border: 1px solid #e2e8f0; }
+    @keyframes popIn { 0% { opacity: 0; transform: scale(0.8) translateY(-10px); } 50% { transform: scale(1.05) translateY(0); } 100% { opacity: 1; transform: scale(1) translateY(0); } }
+    .saved-label-item.just-added { animation: popIn 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55); }
+    .saved-label-preview { width: 50px; height: 28px; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 7px; overflow: hidden; flex-shrink: 0; }
+    .saved-label-preview.white-preview { box-shadow: 0 0 0 1px #d1d5db; }
+    .saved-label-info { flex: 1; min-width: 0; }
+    .saved-label-text { font-size: 12px; font-weight: 600; color: #1a365d; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .saved-label-details { font-size: 10px; color: #64748b; margin-top: 2px; }
+    .saved-label-qty { font-size: 11px; font-weight: 600; color: #475569; background: #e2e8f0; padding: 4px 8px; border-radius: 4px; flex-shrink: 0; }
+    .btn-remove-saved { width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; background: transparent; color: #94a3b8; border: none; cursor: pointer; font-size: 16px; border-radius: 4px; flex-shrink: 0; }
+    .btn-remove-saved:hover { color: #dc2626; background: #fee2e2; }
+    .empty-state { text-align: center; padding: 32px 16px; color: #94a3b8; font-size: 13px; }
+    .submit-card { display: flex; flex-direction: column; gap: 12px; }
+    .submit-input { width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px; font-family: 'Montserrat', sans-serif; }
+    .submit-input:focus { outline: none; border-color: #3b82f6; }
+    .submit-input::placeholder { color: #94a3b8; }
+    .btn-submit { width: 100%; padding: 14px 20px; background: #10b981; color: white; border: none; border-radius: 8px; font-size: 15px; font-weight: 600; font-family: 'Montserrat', sans-serif; cursor: pointer; transition: all 0.2s; }
+    .btn-submit:hover:not(:disabled) { background: #059669; }
+    .btn-submit:disabled { background: #d1d5db; cursor: not-allowed; }
+    .notes-section { margin-top: 8px; }
+    .notes-label { font-size: 12px; font-weight: 600; color: #475569; margin-bottom: 8px; display: block; }
+    .notes-textarea { width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 13px; font-family: 'Montserrat', sans-serif; resize: vertical; min-height: 80px; }
+    .notes-textarea:focus { outline: none; border-color: #3b82f6; }
+    .notes-textarea::placeholder { color: #94a3b8; }
+    .toast { position: fixed; bottom: 24px; right: 24px; padding: 16px 24px; background: #1a365d; color: white; border-radius: 8px; font-size: 14px; font-family: 'Montserrat', sans-serif; transform: translateY(100px); opacity: 0; transition: all 0.3s ease; z-index: 200; }
+    .toast.show { transform: translateY(0); opacity: 1; }
+    .toast.success { background: #059669; }
+    .toast.error { background: #dc2626; }
+    .spinner { display: inline-block; width: 16px; height: 16px; border: 2px solid #ffffff; border-top-color: transparent; border-radius: 50%; animation: spin 0.8s linear infinite; margin-right: 8px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
   </style>
 </head>
 <body>
   <div class="container">
-    <div class="header">
-      <h1>Nameplate Label Creator</h1>
-      <p>Design custom nameplates for your control panels • Drag text to position</p>
-    </div>
-
     <div class="main-grid">
-      <!-- Preview Card -->
-      <div class="card">
-        <h2 class="card-title">Live Preview</h2>
-        <div class="preview-container">
-          <div class="preview-wrapper">
-            <div id="labelPreview" class="label-preview squared">
-              <!-- Text lines will be rendered here -->
-            </div>
+      <div class="controls-column">
+        <div class="card">
+          <div class="card-title">Label Size</div>
+          <div class="size-grid">
+            <button class="size-btn" data-width="1.5" data-height="0.5"><span class="size-btn-label">Small</span><span class="size-btn-dims">1.5" × 0.5"</span></button>
+            <button class="size-btn" data-width="2.5" data-height="0.75"><span class="size-btn-label">Medium</span><span class="size-btn-dims">2.5" × 0.75"</span></button>
+            <button class="size-btn active" data-width="4" data-height="1"><span class="size-btn-label">Standard</span><span class="size-btn-dims">4" × 1"</span></button>
+            <button class="size-btn" data-width="5" data-height="1.5"><span class="size-btn-label">Large</span><span class="size-btn-dims">5" × 1.5"</span></button>
           </div>
-          <div class="preview-dimensions">
-            <span id="dimensionDisplay">1.50" × 5.00"</span>
-          </div>
-          <div class="quantity-row">
-            <label for="quantity">Qty:</label>
-            <input type="number" id="quantity" class="quantity-input" value="1" min="1" max="999">
-            <button id="btnAddToList" class="btn-add">Add to List</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Controls Card -->
-      <div class="card">
-        <h2 class="card-title">Label Settings</h2>
-        
-        <div class="form-group">
-          <label>Size (inches)</label>
-          <div class="form-row">
-            <div>
-              <input type="number" id="labelHeight" class="form-input" value="1.50" step="0.125" min="0.5" max="12" placeholder="Height">
-            </div>
-            <div>
-              <input type="number" id="labelWidth" class="form-input" value="5.00" step="0.125" min="0.5" max="24" placeholder="Width">
+          <div class="custom-size-section">
+            <div class="custom-size-label">Custom Size</div>
+            <div class="custom-size-row">
+              <div class="custom-size-input"><label>Width</label><input type="number" id="labelWidth" value="4" step="0.125" min="0.5" max="24"></div>
+              <div class="custom-size-input"><label>Height</label><input type="number" id="labelHeight" value="1" step="0.125" min="0.25" max="12"></div>
             </div>
           </div>
         </div>
-
-        <div class="form-group">
-          <label>Font</label>
-          <select id="fontSelect" class="form-select">
-            <option value="Calibri">Calibri</option>
-            <option value="Arial">Arial</option>
-            <option value="Helvetica">Helvetica</option>
-            <option value="Times New Roman">Times New Roman</option>
-            <option value="Verdana">Verdana</option>
-            <option value="Tahoma">Tahoma</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label>Text Lines</label>
-          <div id="textLinesContainer" class="text-lines-container">
-            <!-- Text line rows will be added here -->
+        <div class="card">
+          <div class="form-group">
+            <label>Font</label>
+            <select id="fontSelect" class="form-select">
+              <option value="Calibri" selected>Calibri (Default)</option>
+              <option value="Arial">Arial</option>
+              <option value="Helvetica">Helvetica</option>
+              <option value="Source Sans 3">Source Sans 3</option>
+              <option value="Times New Roman">Times New Roman</option>
+              <option value="Verdana">Verdana</option>
+              <option value="Tahoma">Tahoma</option>
+            </select>
           </div>
+        </div>
+        <div class="card">
+          <div class="card-title">Text Lines</div>
+          <div id="textLinesContainer" class="text-lines-container"></div>
           <button id="btnAddLine" class="btn-add-line">+ Add Line</button>
         </div>
-
-        <div class="form-group">
-          <label>Color Palette</label>
-          <div id="colorPalette" class="color-palette">
-            <!-- Color buttons will be generated -->
-          </div>
+        <div class="card">
+          <div class="card-title">Color</div>
+          <div id="colorPalette" class="color-grid"></div>
         </div>
-
-        <div class="form-group">
-          <label>Corners</label>
+        <div class="card">
+          <div class="card-title">Corners</div>
           <div class="corner-options">
             <button class="corner-btn" data-corner="rounded">Rounded</button>
             <button class="corner-btn active" data-corner="squared">Squared</button>
           </div>
         </div>
       </div>
-
-      <!-- Sidebar -->
+      <div class="preview-column">
+        <div class="preview-header" id="previewHeader">Standard · 4" × 1" — Drag text to reposition</div>
+        <div class="preview-wrapper">
+          <div id="labelPreview" class="label-preview squared"></div>
+        </div>
+        <div class="preview-footer">
+          <button class="reset-positions" id="btnResetPositions">Reset text positions</button>
+        </div>
+        <div class="add-section">
+          <input type="number" id="quantity" class="quantity-input" value="1" min="1" max="999">
+          <button id="btnAddToList" class="btn-add">Add to List</button>
+        </div>
+      </div>
       <div class="sidebar">
-        <!-- Saved Labels -->
         <div class="card">
-          <h2 class="card-title">Label List</h2>
+          <div class="saved-labels-header">
+            <span class="saved-labels-title">Saved Labels</span>
+            <span class="saved-labels-count" id="labelCount">0 total</span>
+          </div>
           <div id="savedLabelsList" class="saved-labels-list">
-            <div class="empty-state">No labels added yet.</div>
+            <div class="empty-state">No labels yet</div>
           </div>
         </div>
-
-        <!-- Templates -->
-        <div class="card">
-          <h2 class="card-title">Saved Templates</h2>
-          <div id="templatesList" class="templates-list">
-            <div class="empty-state">No templates saved yet.</div>
-          </div>
-          <button id="btnSaveTemplate" class="btn-save-template">Save Current as Template</button>
-        </div>
-
-        <!-- Submit Section -->
-        <div class="card submit-section">
-          <div class="form-group-submit">
-            <label>Reference ID</label>
-            <input type="text" id="refId" placeholder="e.g., ACME-PO-1234">
-          </div>
-          
-          <div class="form-group-submit">
-            <label>Contact Name</label>
-            <input type="text" id="contactName" placeholder="Your name">
-          </div>
-          
-          <div class="form-group-submit">
-            <label>Contact Email</label>
-            <input type="email" id="contactEmail" placeholder="your@email.com">
-          </div>
-
+        <div class="card submit-card">
+          <input type="text" id="refId" class="submit-input" placeholder="Reference ID (required)">
+          <input type="text" id="contactName" class="submit-input" placeholder="Contact Name">
+          <input type="email" id="contactEmail" class="submit-input" placeholder="Contact Email">
           <button id="btnSubmit" class="btn-submit" disabled>Submit for Quote</button>
+          <div class="notes-section">
+            <label class="notes-label">Notes:</label>
+            <textarea id="notes" class="notes-textarea" placeholder="Any additional notes or special requests..."></textarea>
+          </div>
         </div>
       </div>
     </div>
   </div>
-
-  <!-- Template Name Modal -->
-  <div id="templateModal" class="modal-overlay">
-    <div class="modal">
-      <h3>Save Template</h3>
-      <input type="text" id="templateName" class="form-input" placeholder="Template name">
-      <div class="modal-buttons">
-        <button class="btn-modal-cancel" onclick="closeTemplateModal()">Cancel</button>
-        <button class="btn-modal-confirm" onclick="confirmSaveTemplate()">Save</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Contact Edit Modal -->
-  <div id="contactModal" class="modal-overlay">
-    <div class="modal">
-      <h3>Edit Contact Information</h3>
-      <div class="form-group-submit">
-        <label>Name</label>
-        <input type="text" id="modalContactName" class="form-input">
-      </div>
-      <div class="form-group-submit">
-        <label>Email</label>
-        <input type="email" id="modalContactEmail" class="form-input">
-      </div>
-      <div class="modal-buttons">
-        <button class="btn-modal-cancel" onclick="closeContactModal()">Cancel</button>
-        <button class="btn-modal-confirm" onclick="confirmContactUpdate()">Update</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Toast -->
   <div id="toast" class="toast"></div>
 
   <script>
-    // ==================== STATE ====================
     const state = {
-      height: 1.5,
-      width: 5.0,
-      font: 'Calibri',
-      textLines: [{ text: '', fontSize: 22, x: 50, y: 50 }],
-      color: { name: 'Green/White', bg: '#008000', text: '#FFFFFF' },
-      corners: 'squared',
-      quantity: 1,
-      savedLabels: [],
-      templates: []
+      height: 1, width: 4, font: 'Calibri',
+      textLines: [{ text: '', fontSize: 20, x: 50, y: 50 }],
+      color: { name: 'Green/White', bg: '#22c55e', text: '#FFFFFF' },
+      corners: 'squared', quantity: 1, savedLabels: []
     };
 
     const COLORS = [
-      { name: 'Green/White', bg: '#008000', text: '#FFFFFF' },
-      { name: 'Red/White', bg: '#CC0000', text: '#FFFFFF' },
-      { name: 'Yellow/Black', bg: '#FFD700', text: '#000000' },
-      { name: 'Blue/White', bg: '#0066CC', text: '#FFFFFF' },
+      { name: 'Green/White', bg: '#22c55e', text: '#FFFFFF' },
+      { name: 'Red/White', bg: '#ef4444', text: '#FFFFFF' },
+      { name: 'Yellow/Black', bg: '#eab308', text: '#000000' },
+      { name: 'Blue/White', bg: '#3b82f6', text: '#FFFFFF' },
       { name: 'Black/White', bg: '#1a1a1a', text: '#FFFFFF' },
       { name: 'White/Black', bg: '#FFFFFF', text: '#000000' },
-      { name: 'Orange/Black', bg: '#FF6600', text: '#000000' },
-      { name: 'Gray/Black', bg: '#808080', text: '#000000' }
+      { name: 'Orange/Black', bg: '#f97316', text: '#000000' },
+      { name: 'Gray/Black', bg: '#6b7280', text: '#000000' }
     ];
 
     const FONT_SIZES = [8, 10, 12, 14, 16, 18, 20, 22, 24, 28, 32, 36, 42, 48, 56, 64, 72];
 
-    // ==================== INITIALIZATION ====================
     document.addEventListener('DOMContentLoaded', () => {
-      loadFromStorage();
-      initColorPalette();
-      initCornerButtons();
-      initTextLines();
-      initEventListeners();
-      updatePreview();
-      updateSavedLabelsList();
-      updateTemplatesList();
-      updateSubmitButton();
+      loadFromStorage(); initColorPalette(); initSizeButtons(); initCornerButtons();
+      initTextLines(); initEventListeners(); updatePreview(); updateSavedLabelsList(); updateSubmitButton();
     });
 
     function loadFromStorage() {
-      const savedLabels = localStorage.getItem('nameplateLabels');
-      const templates = localStorage.getItem('nameplateTemplates');
-      const contact = localStorage.getItem('nameplateContact');
-      
+      const savedLabels = localStorage.getItem('nameplateLabelsV2');
+      const contact = localStorage.getItem('nameplateContactV2');
       if (savedLabels) state.savedLabels = JSON.parse(savedLabels);
-      if (templates) state.templates = JSON.parse(templates);
       if (contact) {
         const { name, email } = JSON.parse(contact);
         document.getElementById('contactName').value = name || '';
@@ -855,29 +236,36 @@
     }
 
     function saveToStorage() {
-      localStorage.setItem('nameplateLabels', JSON.stringify(state.savedLabels));
-      localStorage.setItem('nameplateTemplates', JSON.stringify(state.templates));
-      localStorage.setItem('nameplateContact', JSON.stringify({
+      localStorage.setItem('nameplateLabelsV2', JSON.stringify(state.savedLabels));
+      localStorage.setItem('nameplateContactV2', JSON.stringify({
         name: document.getElementById('contactName').value,
         email: document.getElementById('contactEmail').value
       }));
     }
 
-    // ==================== COLOR PALETTE ====================
+    function initSizeButtons() {
+      document.querySelectorAll('.size-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          state.width = parseFloat(btn.dataset.width);
+          state.height = parseFloat(btn.dataset.height);
+          document.getElementById('labelWidth').value = state.width;
+          document.getElementById('labelHeight').value = state.height;
+          updatePreview();
+        });
+      });
+    }
+
     function initColorPalette() {
       const palette = document.getElementById('colorPalette');
       palette.innerHTML = COLORS.map(color => `
-        <button class="color-btn ${color.name === state.color.name ? 'active' : ''}" 
-                data-color="${color.name}"
-                style="background: ${color.bg}; color: ${color.text}; border-color: ${color.bg === '#FFFFFF' ? '#d1d5db' : color.bg}">
-          ${color.name.split('/')[0]}
-        </button>
+        <button class="color-btn ${color.name === state.color.name ? 'active' : ''} ${color.bg === '#FFFFFF' ? 'white-option' : ''}" 
+                data-color="${color.name}" style="background: ${color.bg};"></button>
       `).join('');
-
       palette.addEventListener('click', (e) => {
         if (e.target.classList.contains('color-btn')) {
-          const colorName = e.target.dataset.color;
-          state.color = COLORS.find(c => c.name === colorName);
+          state.color = COLORS.find(c => c.name === e.target.dataset.color);
           document.querySelectorAll('.color-btn').forEach(btn => btn.classList.remove('active'));
           e.target.classList.add('active');
           updatePreview();
@@ -885,7 +273,6 @@
       });
     }
 
-    // ==================== CORNER BUTTONS ====================
     function initCornerButtons() {
       document.querySelectorAll('.corner-btn').forEach(btn => {
         btn.addEventListener('click', () => {
@@ -897,257 +284,169 @@
       });
     }
 
-    // ==================== TEXT LINES ====================
-    function initTextLines() {
-      renderTextLineInputs();
-    }
+    function initTextLines() { renderTextLineInputs(); }
 
     function renderTextLineInputs() {
       const container = document.getElementById('textLinesContainer');
       container.innerHTML = state.textLines.map((line, index) => `
         <div class="text-line-row" data-index="${index}">
-          <input type="text" value="${escapeHtml(line.text)}" placeholder="Enter text" data-field="text">
+          <span class="text-line-label">Line ${index + 1}</span>
+          <input type="text" value="${escapeHtml(line.text)}" placeholder="${index === 0 ? 'Enter text' : 'Optional'}" data-field="text">
           <select data-field="fontSize">
-            ${FONT_SIZES.map(size => `<option value="${size}" ${line.fontSize === size ? 'selected' : ''}>${size} pt</option>`).join('')}
+            ${FONT_SIZES.map(size => `<option value="${size}" ${line.fontSize === size ? 'selected' : ''}>${size}pt</option>`).join('')}
           </select>
-          ${state.textLines.length > 1 ? `<button class="btn-remove-line" data-index="${index}">Remove</button>` : ''}
+          ${state.textLines.length > 1 ? `<button class="btn-remove-line" data-index="${index}">×</button>` : ''}
         </div>
       `).join('');
 
-      // Add event listeners
       container.querySelectorAll('input[data-field="text"]').forEach((input, index) => {
-        input.addEventListener('input', (e) => {
-          state.textLines[index].text = e.target.value;
-          updatePreview();
-        });
+        input.addEventListener('input', (e) => { state.textLines[index].text = e.target.value; updatePreview(); });
       });
-
       container.querySelectorAll('select[data-field="fontSize"]').forEach((select, index) => {
-        select.addEventListener('change', (e) => {
-          state.textLines[index].fontSize = parseInt(e.target.value);
-          updatePreview();
-        });
+        select.addEventListener('change', (e) => { state.textLines[index].fontSize = parseInt(e.target.value); updatePreview(); });
       });
-
       container.querySelectorAll('.btn-remove-line').forEach(btn => {
         btn.addEventListener('click', () => {
-          const index = parseInt(btn.dataset.index);
-          state.textLines.splice(index, 1);
-          renderTextLineInputs();
-          updatePreview();
+          state.textLines.splice(parseInt(btn.dataset.index), 1);
+          renderTextLineInputs(); updatePreview();
         });
       });
     }
 
-    // ==================== EVENT LISTENERS ====================
     function initEventListeners() {
-      // Size inputs
       document.getElementById('labelHeight').addEventListener('input', (e) => {
-        state.height = parseFloat(e.target.value) || 1.5;
+        state.height = parseFloat(e.target.value) || 1;
+        document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'));
         updatePreview();
       });
-
       document.getElementById('labelWidth').addEventListener('input', (e) => {
-        state.width = parseFloat(e.target.value) || 5.0;
+        state.width = parseFloat(e.target.value) || 4;
+        document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'));
         updatePreview();
       });
-
-      // Font select
-      document.getElementById('fontSelect').addEventListener('change', (e) => {
-        state.font = e.target.value;
-        updatePreview();
-      });
-
-      // Add line button
+      document.getElementById('fontSelect').addEventListener('change', (e) => { state.font = e.target.value; updatePreview(); });
       document.getElementById('btnAddLine').addEventListener('click', () => {
-        state.textLines.push({ text: '', fontSize: 18, x: 50, y: 30 + (state.textLines.length * 20) });
-        renderTextLineInputs();
-        updatePreview();
+        state.textLines.push({ text: '', fontSize: 20, x: 50, y: Math.max(20, Math.min(80, 50 + (state.textLines.length * 20))) });
+        renderTextLineInputs(); updatePreview();
       });
-
-      // Quantity input
-      document.getElementById('quantity').addEventListener('input', (e) => {
-        state.quantity = parseInt(e.target.value) || 1;
-      });
-
-      // Add to list button
+      document.getElementById('quantity').addEventListener('input', (e) => { state.quantity = parseInt(e.target.value) || 1; });
       document.getElementById('btnAddToList').addEventListener('click', addToList);
-
-      // Submit button
       document.getElementById('btnSubmit').addEventListener('click', submitOrder);
-
-      // Save template button
-      document.getElementById('btnSaveTemplate').addEventListener('click', () => {
-        document.getElementById('templateModal').classList.add('active');
-        document.getElementById('templateName').value = '';
-        document.getElementById('templateName').focus();
-      });
-
-      // Contact info changes
+      document.getElementById('btnResetPositions').addEventListener('click', resetTextPositions);
       document.getElementById('contactName').addEventListener('input', saveToStorage);
       document.getElementById('contactEmail').addEventListener('input', saveToStorage);
       document.getElementById('refId').addEventListener('input', updateSubmitButton);
     }
 
-    // ==================== PREVIEW ====================
+    function resetTextPositions() {
+      const lineCount = state.textLines.length;
+      state.textLines.forEach((line, index) => {
+        line.x = 50;
+        line.y = lineCount === 1 ? 50 : 20 + (60 / (lineCount + 1)) * (index + 1);
+      });
+      updatePreview();
+      showToast('Text positions reset', 'success');
+    }
+
     function updatePreview() {
       const preview = document.getElementById('labelPreview');
-      const scale = Math.min(350 / (state.width * 72), 180 / (state.height * 72));
+      const scale = Math.min(400 / (state.width * 72), 200 / (state.height * 72));
       const width = state.width * 72 * scale;
       const height = state.height * 72 * scale;
 
       preview.style.width = `${width}px`;
       preview.style.height = `${height}px`;
       preview.style.background = state.color.bg;
-      preview.style.border = state.color.bg === '#FFFFFF' ? '1px solid #d1d5db' : 'none';
-      preview.className = `label-preview ${state.corners}`;
+      preview.className = `label-preview ${state.corners} ${state.color.bg === '#FFFFFF' ? 'white-label' : ''}`;
 
-      // Render text lines
       preview.innerHTML = state.textLines.map((line, index) => {
         if (!line.text) return '';
         const fontSize = line.fontSize * scale;
-        return `
-          <div class="text-line" 
-               data-index="${index}"
-               style="
-                 left: ${line.x}%;
-                 top: ${line.y}%;
-                 transform: translate(-50%, -50%);
-                 font-family: ${state.font}, sans-serif;
-                 font-size: ${fontSize}px;
-                 color: ${state.color.text};
-               ">
-            ${escapeHtml(line.text)}
-          </div>
-        `;
+        const fontFamily = state.font === 'Source Sans 3' ? "'Source Sans 3', sans-serif" : `${state.font}, sans-serif`;
+        return `<div class="text-line" data-index="${index}" style="left:${line.x}%;top:${line.y}%;transform:translate(-50%,-50%);font-family:${fontFamily};font-size:${fontSize}px;color:${state.color.text};">${escapeHtml(line.text)}</div>`;
       }).join('');
 
-      // Setup drag handlers
       setupDragHandlers();
+      const sizeLabel = getSizeLabel();
+      document.getElementById('previewHeader').textContent = `${sizeLabel} · ${state.width}" × ${state.height}" — Drag text to reposition`;
+    }
 
-      // Update dimension display
-      document.getElementById('dimensionDisplay').textContent = `${state.height.toFixed(2)}" × ${state.width.toFixed(2)}"`;
+    function getSizeLabel() {
+      if (state.width === 1.5 && state.height === 0.5) return 'Small';
+      if (state.width === 2.5 && state.height === 0.75) return 'Medium';
+      if (state.width === 4 && state.height === 1) return 'Standard';
+      if (state.width === 5 && state.height === 1.5) return 'Large';
+      return 'Custom';
     }
 
     function setupDragHandlers() {
       const preview = document.getElementById('labelPreview');
-      const textElements = preview.querySelectorAll('.text-line');
+      preview.querySelectorAll('.text-line').forEach(el => {
+        let isDragging = false, startX, startY, startLeft, startTop;
 
-      textElements.forEach(el => {
-        let isDragging = false;
-        let startX, startY, startLeft, startTop;
-
-        el.addEventListener('mousedown', (e) => {
-          isDragging = true;
-          el.classList.add('dragging');
-          startX = e.clientX;
-          startY = e.clientY;
+        const onStart = (clientX, clientY) => {
+          isDragging = true; el.classList.add('dragging');
+          startX = clientX; startY = clientY;
           const index = parseInt(el.dataset.index);
-          startLeft = state.textLines[index].x;
-          startTop = state.textLines[index].y;
-          e.preventDefault();
-        });
+          startLeft = state.textLines[index].x; startTop = state.textLines[index].y;
+        };
 
-        document.addEventListener('mousemove', (e) => {
+        const onMove = (clientX, clientY) => {
           if (!isDragging) return;
           const rect = preview.getBoundingClientRect();
-          const deltaX = ((e.clientX - startX) / rect.width) * 100;
-          const deltaY = ((e.clientY - startY) / rect.height) * 100;
-          
+          const deltaX = ((clientX - startX) / rect.width) * 100;
+          const deltaY = ((clientY - startY) / rect.height) * 100;
           const index = parseInt(el.dataset.index);
           state.textLines[index].x = Math.max(5, Math.min(95, startLeft + deltaX));
           state.textLines[index].y = Math.max(10, Math.min(90, startTop + deltaY));
-          
           el.style.left = `${state.textLines[index].x}%`;
           el.style.top = `${state.textLines[index].y}%`;
-        });
+        };
 
-        document.addEventListener('mouseup', () => {
-          if (isDragging) {
-            isDragging = false;
-            el.classList.remove('dragging');
-          }
-        });
+        const onEnd = () => { if (isDragging) { isDragging = false; el.classList.remove('dragging'); } };
 
-        // Touch support
-        el.addEventListener('touchstart', (e) => {
-          isDragging = true;
-          el.classList.add('dragging');
-          startX = e.touches[0].clientX;
-          startY = e.touches[0].clientY;
-          const index = parseInt(el.dataset.index);
-          startLeft = state.textLines[index].x;
-          startTop = state.textLines[index].y;
-          e.preventDefault();
-        });
-
-        document.addEventListener('touchmove', (e) => {
-          if (!isDragging) return;
-          const rect = preview.getBoundingClientRect();
-          const deltaX = ((e.touches[0].clientX - startX) / rect.width) * 100;
-          const deltaY = ((e.touches[0].clientY - startY) / rect.height) * 100;
-          
-          const index = parseInt(el.dataset.index);
-          state.textLines[index].x = Math.max(5, Math.min(95, startLeft + deltaX));
-          state.textLines[index].y = Math.max(10, Math.min(90, startTop + deltaY));
-          
-          el.style.left = `${state.textLines[index].x}%`;
-          el.style.top = `${state.textLines[index].y}%`;
-        });
-
-        document.addEventListener('touchend', () => {
-          if (isDragging) {
-            isDragging = false;
-            el.classList.remove('dragging');
-          }
-        });
+        el.addEventListener('mousedown', (e) => { onStart(e.clientX, e.clientY); e.preventDefault(); });
+        document.addEventListener('mousemove', (e) => onMove(e.clientX, e.clientY));
+        document.addEventListener('mouseup', onEnd);
+        el.addEventListener('touchstart', (e) => { onStart(e.touches[0].clientX, e.touches[0].clientY); e.preventDefault(); }, { passive: false });
+        document.addEventListener('touchmove', (e) => { if (isDragging) onMove(e.touches[0].clientX, e.touches[0].clientY); }, { passive: false });
+        document.addEventListener('touchend', onEnd);
       });
     }
 
-    // ==================== SAVED LABELS ====================
     function addToList() {
-      const hasText = state.textLines.some(line => line.text.trim());
-      if (!hasText) {
-        showToast('Please enter at least one line of text', 'error');
-        return;
+      if (!state.textLines.some(line => line.text.trim())) {
+        showToast('Please enter at least one line of text', 'error'); return;
       }
-
-      const label = {
-        id: Date.now(),
-        height: state.height,
-        width: state.width,
-        font: state.font,
+      state.savedLabels.push({
+        id: Date.now(), height: state.height, width: state.width, font: state.font,
         textLines: JSON.parse(JSON.stringify(state.textLines)),
-        color: { ...state.color },
-        corners: state.corners,
-        quantity: state.quantity
-      };
-
-      state.savedLabels.push(label);
-      saveToStorage();
-      updateSavedLabelsList();
-      updateSubmitButton();
-      showToast(`Added ${state.quantity} label(s) to list`, 'success');
+        color: { ...state.color }, corners: state.corners, quantity: state.quantity
+      });
+      saveToStorage(); updateSavedLabelsList(true); updateSubmitButton();
+      createConfetti();
+      showToast(`Added ${state.quantity} label${state.quantity > 1 ? 's' : ''} to list`, 'success');
     }
 
-    function updateSavedLabelsList() {
+    function updateSavedLabelsList(justAdded = false) {
       const container = document.getElementById('savedLabelsList');
+      const totalCount = state.savedLabels.reduce((sum, l) => sum + l.quantity, 0);
+      document.getElementById('labelCount').textContent = `${totalCount} total`;
       
       if (state.savedLabels.length === 0) {
-        container.innerHTML = '<div class="empty-state">No labels added yet.</div>';
-        return;
+        container.innerHTML = '<div class="empty-state">No labels yet</div>'; return;
       }
 
-      container.innerHTML = state.savedLabels.map(label => {
+      container.innerHTML = state.savedLabels.map((label, idx) => {
         const primaryText = label.textLines.find(l => l.text)?.text || 'Empty';
+        const isLast = idx === state.savedLabels.length - 1;
+        const fontFamily = label.font === 'Source Sans 3' ? "'Source Sans 3', sans-serif" : `${label.font}, sans-serif`;
         return `
-          <div class="saved-label-item">
-            <div class="saved-label-preview" style="background: ${label.color.bg}; color: ${label.color.text}; font-family: ${label.font}">
-              ${escapeHtml(primaryText.substring(0, 8))}
-            </div>
+          <div class="saved-label-item ${justAdded && isLast ? 'just-added' : ''}">
+            <div class="saved-label-preview ${label.color.bg === '#FFFFFF' ? 'white-preview' : ''}" style="background:${label.color.bg};color:${label.color.text};font-family:${fontFamily}">${escapeHtml(primaryText.substring(0, 10))}</div>
             <div class="saved-label-info">
               <div class="saved-label-text">${escapeHtml(primaryText)}</div>
-              <div class="saved-label-details">${label.height}" × ${label.width}" • ${label.color.name}</div>
+              <div class="saved-label-details">${label.width}" × ${label.height}" · ${label.color.name}</div>
             </div>
             <span class="saved-label-qty">×${label.quantity}</span>
             <button class="btn-remove-saved" onclick="removeLabel(${label.id})">×</button>
@@ -1158,113 +457,41 @@
 
     function removeLabel(id) {
       state.savedLabels = state.savedLabels.filter(l => l.id !== id);
-      saveToStorage();
-      updateSavedLabelsList();
-      updateSubmitButton();
+      saveToStorage(); updateSavedLabelsList(); updateSubmitButton();
     }
 
-    // ==================== TEMPLATES ====================
-    function closeTemplateModal() {
-      document.getElementById('templateModal').classList.remove('active');
-    }
-
-    function confirmSaveTemplate() {
-      const name = document.getElementById('templateName').value.trim();
-      if (!name) {
-        showToast('Please enter a template name', 'error');
-        return;
+    function createConfetti() {
+      const colors = ['#22c55e', '#3b82f6', '#eab308', '#ef4444', '#f97316'];
+      for (let i = 0; i < 30; i++) {
+        const c = document.createElement('div');
+        c.style.cssText = `position:fixed;width:${Math.random()*10+5}px;height:${Math.random()*10+5}px;background:${colors[Math.floor(Math.random()*colors.length)]};left:${50+(Math.random()-0.5)*30}%;top:50%;border-radius:${Math.random()>0.5?'50%':'0'};pointer-events:none;z-index:300;`;
+        document.body.appendChild(c);
+        const angle = (Math.random()-0.5)*Math.PI, velocity = Math.random()*300+200;
+        const vx = Math.cos(angle)*velocity, vy = -Math.abs(Math.sin(angle)*velocity)-100;
+        let x=0, y=0; const startTime = performance.now();
+        (function animate(time) {
+          const elapsed = (time-startTime)/1000;
+          x = vx*elapsed; y = vy*elapsed + 400*elapsed*elapsed;
+          c.style.transform = `translate(${x}px,${y}px) rotate(${elapsed*360}deg)`;
+          c.style.opacity = Math.max(0, 1-elapsed/1.5);
+          elapsed < 1.5 ? requestAnimationFrame(animate) : c.remove();
+        })(performance.now());
       }
-
-      const template = {
-        id: Date.now(),
-        name,
-        height: state.height,
-        width: state.width,
-        font: state.font,
-        textLines: JSON.parse(JSON.stringify(state.textLines)),
-        color: { ...state.color },
-        corners: state.corners
-      };
-
-      state.templates.push(template);
-      saveToStorage();
-      updateTemplatesList();
-      closeTemplateModal();
-      showToast('Template saved!', 'success');
     }
 
-    function updateTemplatesList() {
-      const container = document.getElementById('templatesList');
-      
-      if (state.templates.length === 0) {
-        container.innerHTML = '<div class="empty-state">No templates saved yet.</div>';
-        return;
-      }
-
-      container.innerHTML = state.templates.map(template => `
-        <div class="template-item" onclick="loadTemplate(${template.id})">
-          <span class="template-name">${escapeHtml(template.name)}</span>
-          <button class="btn-template-delete" onclick="event.stopPropagation(); deleteTemplate(${template.id})">×</button>
-        </div>
-      `).join('');
-    }
-
-    function loadTemplate(id) {
-      const template = state.templates.find(t => t.id === id);
-      if (!template) return;
-
-      state.height = template.height;
-      state.width = template.width;
-      state.font = template.font;
-      state.textLines = JSON.parse(JSON.stringify(template.textLines));
-      state.color = { ...template.color };
-      state.corners = template.corners;
-
-      // Update UI
-      document.getElementById('labelHeight').value = state.height;
-      document.getElementById('labelWidth').value = state.width;
-      document.getElementById('fontSelect').value = state.font;
-      
-      document.querySelectorAll('.color-btn').forEach(btn => {
-        btn.classList.toggle('active', btn.dataset.color === state.color.name);
-      });
-      
-      document.querySelectorAll('.corner-btn').forEach(btn => {
-        btn.classList.toggle('active', btn.dataset.corner === state.corners);
-      });
-
-      renderTextLineInputs();
-      updatePreview();
-      showToast('Template loaded!', 'success');
-    }
-
-    function deleteTemplate(id) {
-      state.templates = state.templates.filter(t => t.id !== id);
-      saveToStorage();
-      updateTemplatesList();
-    }
-
-    // ==================== SUBMIT ====================
     function updateSubmitButton() {
       const refId = document.getElementById('refId').value.trim();
-      const hasLabels = state.savedLabels.length > 0;
-      document.getElementById('btnSubmit').disabled = !refId || !hasLabels;
+      document.getElementById('btnSubmit').disabled = !refId || state.savedLabels.length === 0;
     }
 
     async function submitOrder() {
       const refId = document.getElementById('refId').value.trim();
       const contactName = document.getElementById('contactName').value.trim();
       const contactEmail = document.getElementById('contactEmail').value.trim();
+      const notes = document.getElementById('notes').value.trim();
 
-      if (!refId) {
-        showToast('Please enter a Reference ID', 'error');
-        return;
-      }
-
-      if (state.savedLabels.length === 0) {
-        showToast('Please add at least one label to the list', 'error');
-        return;
-      }
+      if (!refId) { showToast('Please enter a Reference ID', 'error'); return; }
+      if (state.savedLabels.length === 0) { showToast('Please add at least one label', 'error'); return; }
 
       const btn = document.getElementById('btnSubmit');
       btn.disabled = true;
@@ -1274,60 +501,29 @@
         const response = await fetch('/api/submit-order', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            refId,
-            contactName,
-            contactEmail,
-            labels: state.savedLabels
-          })
+          body: JSON.stringify({ refId, contactName, contactEmail, notes, labels: state.savedLabels })
         });
-
         const result = await response.json();
-
         if (response.ok) {
           showToast(`Quote request submitted! Reference: ${refId}`, 'success');
-          state.savedLabels = [];
-          saveToStorage();
-          updateSavedLabelsList();
+          state.savedLabels = []; saveToStorage(); updateSavedLabelsList();
           document.getElementById('refId').value = '';
+          document.getElementById('notes').value = '';
           updateSubmitButton();
-        } else {
-          throw new Error(result.error || 'Submission failed');
-        }
+        } else throw new Error(result.error || 'Submission failed');
       } catch (error) {
         console.error('Submit error:', error);
         showToast('Failed to submit. Please try again.', 'error');
       } finally {
-        btn.disabled = false;
-        btn.textContent = 'Submit for Quote';
-        updateSubmitButton();
+        btn.disabled = false; btn.textContent = 'Submit for Quote'; updateSubmitButton();
       }
     }
 
-    // ==================== UTILITIES ====================
-    function escapeHtml(text) {
-      const div = document.createElement('div');
-      div.textContent = text;
-      return div.innerHTML;
-    }
-
+    function escapeHtml(text) { const d = document.createElement('div'); d.textContent = text; return d.innerHTML; }
     function showToast(message, type = 'info') {
       const toast = document.getElementById('toast');
-      toast.textContent = message;
-      toast.className = `toast ${type} show`;
+      toast.textContent = message; toast.className = `toast ${type} show`;
       setTimeout(() => toast.classList.remove('show'), 3000);
-    }
-
-    // Contact modal functions
-    function closeContactModal() {
-      document.getElementById('contactModal').classList.remove('active');
-    }
-
-    function confirmContactUpdate() {
-      document.getElementById('contactName').value = document.getElementById('modalContactName').value;
-      document.getElementById('contactEmail').value = document.getElementById('modalContactEmail').value;
-      saveToStorage();
-      closeContactModal();
     }
   </script>
 </body>

@@ -71,7 +71,7 @@
 
     .preview-column { display: flex; flex-direction: column; }
     .preview-header { text-align: center; font-size: 12px; color: #64748b; margin-bottom: 12px; }
-    .preview-wrapper { flex: 1; display: flex; align-items: center; justify-content: center; background: white; border-radius: 12px; border: 1px solid #e2e8f0; padding: 40px; min-height: 380px; }
+    .preview-wrapper { flex: 1; display: flex; align-items: center; justify-content: center; background: white; border-radius: 12px; border: 1px solid #e2e8f0; padding: 40px; min-height: 380px; position: relative; }
     
     .label-container { position: relative; }
     .label-preview { position: relative; display: flex; align-items: center; justify-content: center; cursor: default; overflow: visible; transition: all 0.3s ease; }
@@ -79,13 +79,10 @@
     .label-preview.squared { border-radius: 0; }
     .label-preview.has-outline { box-shadow: 0 0 0 2px #d1d5db; }
     
-    /* Guide Lines */
     .guide-line { position: absolute; background: #3b82f6; opacity: 0; transition: opacity 0.15s; pointer-events: none; z-index: 10; }
     .guide-line.visible { opacity: 0.7; }
     .guide-line.center-h { height: 1px; width: calc(100% + 40px); left: -20px; top: 50%; transform: translateY(-50%); }
     .guide-line.center-v { width: 1px; height: calc(100% + 40px); top: -20px; left: 50%; transform: translateX(-50%); }
-    .guide-line.align-h { height: 1px; width: calc(100% + 20px); left: -10px; background: #10b981; }
-    .guide-line.align-v { width: 1px; height: calc(100% + 20px); top: -10px; background: #10b981; }
     
     .text-line { position: absolute; cursor: move; user-select: none; white-space: nowrap; transition: opacity 0.15s; z-index: 5; }
     .text-line:hover { opacity: 0.7; }
@@ -100,14 +97,61 @@
     .btn-add { padding: 10px 28px; background: #10b981; color: white; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; font-family: 'Montserrat', sans-serif; cursor: pointer; transition: all 0.2s; }
     .btn-add:hover { background: #059669; transform: translateY(-1px); }
 
+    /* Checkmark Animation */
+    .checkmark-overlay {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      opacity: 0;
+      z-index: 100;
+    }
+    .checkmark-overlay.show {
+      animation: checkmarkFade 1.2s ease-out forwards;
+    }
+    @keyframes checkmarkFade {
+      0% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
+      20% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+      80% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+      100% { opacity: 0; transform: translate(-50%, -50%) scale(1); }
+    }
+    .checkmark-circle {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: #10b981;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+    }
+    .checkmark-icon {
+      width: 28px;
+      height: 28px;
+      stroke: white;
+      stroke-width: 3;
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-dasharray: 40;
+      stroke-dashoffset: 40;
+    }
+    .checkmark-overlay.show .checkmark-icon {
+      animation: checkmarkDraw 0.4s ease-out 0.15s forwards;
+    }
+    @keyframes checkmarkDraw {
+      to { stroke-dashoffset: 0; }
+    }
+
     .sidebar { display: flex; flex-direction: column; gap: 16px; }
     .saved-labels-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
     .saved-labels-title { font-size: 14px; font-weight: 600; color: #1a365d; }
     .saved-labels-count { font-size: 12px; color: #10b981; font-weight: 600; }
     .saved-labels-list { display: flex; flex-direction: column; gap: 8px; max-height: 260px; overflow-y: auto; }
     .saved-label-item { display: flex; align-items: center; gap: 10px; padding: 10px; background: #f8fafc; border-radius: 8px; border: 1px solid #e2e8f0; }
-    @keyframes popIn { 0% { opacity: 0; transform: scale(0.8) translateY(-10px); } 50% { transform: scale(1.05); } 100% { opacity: 1; transform: scale(1); } }
-    .saved-label-item.just-added { animation: popIn 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55); }
+    @keyframes slideIn { 0% { opacity: 0; transform: translateX(-10px); } 100% { opacity: 1; transform: translateX(0); } }
+    .saved-label-item.just-added { animation: slideIn 0.3s ease-out; }
     .saved-label-preview { width: 44px; height: 24px; border-radius: 3px; display: flex; align-items: center; justify-content: center; font-size: 6px; overflow: hidden; flex-shrink: 0; }
     .saved-label-preview.has-outline { box-shadow: 0 0 0 1px #d1d5db; }
     .saved-label-info { flex: 1; min-width: 0; }
@@ -224,6 +268,13 @@
             <div id="labelPreview" class="label-preview squared">
               <div class="guide-line center-h" id="guideH"></div>
               <div class="guide-line center-v" id="guideV"></div>
+            </div>
+          </div>
+          <div class="checkmark-overlay" id="checkmarkOverlay">
+            <div class="checkmark-circle">
+              <svg class="checkmark-icon" viewBox="0 0 24 24">
+                <polyline points="4,12 10,18 20,6"></polyline>
+              </svg>
             </div>
           </div>
         </div>
@@ -464,7 +515,6 @@
       const needsOutline = state.labelColor.toUpperCase() === '#FFFFFF';
       preview.className = `label-preview ${state.corners} ${needsOutline ? 'has-outline' : ''}`;
 
-      // Keep guide lines, add text
       let html = `<div class="guide-line center-h" id="guideH"></div><div class="guide-line center-v" id="guideV"></div>`;
       
       state.textLines.forEach((line, index) => {
@@ -513,19 +563,16 @@
           let newX = startLeft + ((clientX - startX) / rect.width) * 100;
           let newY = startTop + ((clientY - startY) / rect.height) * 100;
           
-          // Snap to center
           let snappedH = false, snappedV = false;
           if (Math.abs(newX - 50) < SNAP_THRESHOLD) { newX = 50; snappedV = true; }
           if (Math.abs(newY - 50) < SNAP_THRESHOLD) { newY = 50; snappedH = true; }
           
-          // Snap to other text lines
           state.textLines.forEach((otherLine, otherIndex) => {
             if (otherIndex === index || !otherLine.text) return;
             if (Math.abs(newX - otherLine.x) < SNAP_THRESHOLD) { newX = otherLine.x; snappedV = true; }
             if (Math.abs(newY - otherLine.y) < SNAP_THRESHOLD) { newY = otherLine.y; snappedH = true; }
           });
           
-          // Show/hide guides
           guideH.classList.toggle('visible', snappedH);
           guideV.classList.toggle('visible', snappedV);
           if (snappedH && newY !== 50) guideH.style.top = `${newY}%`;
@@ -562,6 +609,14 @@
       return color ? color.name : hex;
     }
 
+    function showCheckmark() {
+      const overlay = document.getElementById('checkmarkOverlay');
+      overlay.classList.remove('show');
+      void overlay.offsetWidth; // Trigger reflow
+      overlay.classList.add('show');
+      setTimeout(() => overlay.classList.remove('show'), 1200);
+    }
+
     function addToList() {
       if (!state.textLines.some(line => line.text.trim())) {
         showToast('Please enter at least one line of text', 'error'); return;
@@ -573,7 +628,7 @@
         corners: state.corners, quantity: state.quantity
       });
       saveToStorage(); updateSavedLabelsList(true); updateSubmitButton();
-      createConfetti();
+      showCheckmark();
       showToast(`Added ${state.quantity} label${state.quantity > 1 ? 's' : ''} to list`, 'success');
     }
 
@@ -608,24 +663,6 @@
     function removeLabel(id) {
       state.savedLabels = state.savedLabels.filter(l => l.id !== id);
       saveToStorage(); updateSavedLabelsList(); updateSubmitButton();
-    }
-
-    function createConfetti() {
-      const colors = ['#22c55e', '#3b82f6', '#eab308', '#ef4444', '#f97316'];
-      for (let i = 0; i < 30; i++) {
-        const c = document.createElement('div');
-        c.style.cssText = `position:fixed;width:${Math.random()*10+5}px;height:${Math.random()*10+5}px;background:${colors[Math.floor(Math.random()*colors.length)]};left:${50+(Math.random()-0.5)*30}%;top:50%;border-radius:${Math.random()>0.5?'50%':'0'};pointer-events:none;z-index:300;`;
-        document.body.appendChild(c);
-        const angle = (Math.random()-0.5)*Math.PI, velocity = Math.random()*300+200;
-        const vx = Math.cos(angle)*velocity, vy = -Math.abs(Math.sin(angle)*velocity)-100;
-        const startTime = performance.now();
-        (function animate(time) {
-          const elapsed = (time-startTime)/1000;
-          c.style.transform = `translate(${vx*elapsed}px,${vy*elapsed + 400*elapsed*elapsed}px) rotate(${elapsed*360}deg)`;
-          c.style.opacity = Math.max(0, 1-elapsed/1.5);
-          elapsed < 1.5 ? requestAnimationFrame(animate) : c.remove();
-        })(performance.now());
-      }
     }
 
     function updateSubmitButton() {

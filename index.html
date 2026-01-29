@@ -332,7 +332,7 @@
     
     const state = {
       height: 2, width: 7, font: 'Calibri',
-      textLines: [{ text: '', fontSize: 20, x: 50, y: 50 }],
+      textLines: [{ text: '', fontSize: 28, x: 50, y: 50 }],
       labelColor: '#22c55e', textColor: '#FFFFFF',
       corners: 'squared', quantity: 1, savedLabels: [],
       zoom: 100
@@ -497,7 +497,7 @@
       });
       document.getElementById('fontSelect').addEventListener('change', (e) => { state.font = e.target.value; updatePreview(); });
       document.getElementById('btnAddLine').addEventListener('click', () => {
-        state.textLines.push({ text: '', fontSize: 20, x: 50, y: Math.max(20, Math.min(80, 50 + (state.textLines.length * 20))) });
+        state.textLines.push({ text: '', fontSize: 28, x: 50, y: Math.max(20, Math.min(80, 50 + (state.textLines.length * 20))) });
         renderTextLineInputs(); updatePreview();
       });
       document.getElementById('quantity').addEventListener('input', (e) => { state.quantity = parseInt(e.target.value) || 1; });
@@ -535,7 +535,7 @@
 
     function resetPage() {
       state.height = 2; state.width = 7; state.font = 'Calibri';
-      state.textLines = [{ text: '', fontSize: 20, x: 50, y: 50 }];
+      state.textLines = [{ text: '', fontSize: 28, x: 50, y: 50 }];
       state.labelColor = '#22c55e'; state.textColor = '#FFFFFF';
       state.corners = 'squared'; state.quantity = 1; state.savedLabels = [];
       state.zoom = 100;

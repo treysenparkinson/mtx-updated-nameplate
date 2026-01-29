@@ -1,8 +1,9 @@
 [build]
   publish = "."
-  functions = "netlify/functions"
+  command = "# no build needed"
 
 [functions]
+  directory = "netlify/functions"
   node_bundler = "esbuild"
 
 [[redirects]]

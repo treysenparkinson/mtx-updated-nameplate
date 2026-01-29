@@ -518,7 +518,7 @@
       
       // Zoom controls
       document.getElementById('zoomIn').addEventListener('click', () => {
-        if (state.zoom < 200) {
+        if (state.zoom < 400) {
           state.zoom += 25;
           updatePreview();
           document.getElementById('zoomLevel').textContent = state.zoom + '%';

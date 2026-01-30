@@ -69,6 +69,10 @@
     .corner-btn:hover { border-color: #cbd5e1; }
     .corner-btn.active { border-color: #3b82f6; background: #eff6ff; color: #1d4ed8; }
 
+    .sticky-back-toggle { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+    .sticky-back-toggle input[type="checkbox"] { width: 18px; height: 18px; accent-color: #10b981; cursor: pointer; }
+    .sticky-back-label { font-size: 13px; color: #475569; }
+
     .preview-column { display: flex; flex-direction: column; }
     .preview-card { background: white; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 1px 3px rgba(0,0,0,0.08); display: flex; flex-direction: column; flex: 1; padding: 20px; }
     .preview-header { text-align: center; font-size: 13px; color: #1a365d; margin-bottom: 8px; font-weight: 600; }
@@ -247,6 +251,14 @@
             <button class="corner-btn active" data-corner="squared">Squared</button>
           </div>
         </div>
+
+        <div class="card">
+          <div class="card-title">Sticky Back</div>
+          <label class="sticky-back-toggle">
+            <input type="checkbox" id="stickyBackCheckbox">
+            <span class="sticky-back-label">Yes, add adhesive backing</span>
+          </label>
+        </div>
       </div>
 
       <div class="preview-column">
@@ -334,7 +346,7 @@
       height: 2, width: 7, font: 'Calibri',
       textLines: [{ text: '', fontSize: 28, x: 50, y: 50 }],
       labelColor: '#22c55e', textColor: '#FFFFFF',
-      corners: 'squared', quantity: 1, savedLabels: [],
+      corners: 'squared', stickyBack: false, quantity: 1, savedLabels: [],
       zoom: 100
     };
 
@@ -507,6 +519,9 @@
       document.getElementById('contactName').addEventListener('input', saveToStorage);
       document.getElementById('contactEmail').addEventListener('input', saveToStorage);
       document.getElementById('refId').addEventListener('input', updateSubmitButton);
+      document.getElementById('stickyBackCheckbox').addEventListener('change', (e) => {
+        state.stickyBack = e.target.checked;
+      });
       
       document.getElementById('btnCreateMore').addEventListener('click', () => {
         document.getElementById('successModal').classList.remove('show');
@@ -537,7 +552,7 @@
       state.height = 2; state.width = 7; state.font = 'Calibri';
       state.textLines = [{ text: '', fontSize: 28, x: 50, y: 50 }];
       state.labelColor = '#22c55e'; state.textColor = '#FFFFFF';
-      state.corners = 'squared'; state.quantity = 1; state.savedLabels = [];
+      state.corners = 'squared'; state.stickyBack = false; state.quantity = 1; state.savedLabels = [];
       state.zoom = 100;
       
       document.getElementById('labelHeight').value = 2;
@@ -547,6 +562,7 @@
       document.getElementById('refId').value = '';
       document.getElementById('notes').value = '';
       document.getElementById('zoomLevel').textContent = '100%';
+      document.getElementById('stickyBackCheckbox').checked = false;
       
       document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'));
       document.querySelectorAll('.corner-btn').forEach(b => b.classList.remove('active'));
@@ -690,7 +706,7 @@
         id: Date.now(), height: state.height, width: state.width, font: state.font,
         textLines: JSON.parse(JSON.stringify(state.textLines)),
         labelColor: state.labelColor, textColor: state.textColor,
-        corners: state.corners, quantity: state.quantity
+        corners: state.corners, stickyBack: state.stickyBack, quantity: state.quantity
       });
       saveToStorage(); updateSavedLabelsList(true); updateSubmitButton();
       showCheckmark();
@@ -714,11 +730,12 @@
       state.height = label.height; state.width = label.width;
       state.font = label.font; state.textLines = JSON.parse(JSON.stringify(label.textLines));
       state.labelColor = label.labelColor; state.textColor = label.textColor;
-      state.corners = label.corners;
+      state.corners = label.corners; state.stickyBack = label.stickyBack || false;
       
       document.getElementById('labelHeight').value = state.height;
       document.getElementById('labelWidth').value = state.width;
       document.getElementById('fontSelect').value = state.font;
+      document.getElementById('stickyBackCheckbox').checked = state.stickyBack;
       
       document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'));
       document.querySelectorAll('.corner-btn').forEach(b => {
@@ -748,7 +765,7 @@
             <div class="saved-label-preview ${needsOutline ? 'has-outline' : ''}" style="background:${label.labelColor};color:${label.textColor};font-family:${fontFamily}">${escapeHtml(primaryText.substring(0, 6))}</div>
             <div class="saved-label-info">
               <div class="saved-label-text">${escapeHtml(primaryText)}</div>
-              <div class="saved-label-details">${label.width}" × ${label.height}" · ${getColorName(label.labelColor)}/${getColorName(label.textColor)}</div>
+              <div class="saved-label-details">${label.width}" × ${label.height}" · ${getColorName(label.labelColor)}/${getColorName(label.textColor)}${label.stickyBack ? ' · Sticky' : ''}</div>
             </div>
             <span class="saved-label-qty">×${label.quantity}</span>
             <div class="saved-label-actions">

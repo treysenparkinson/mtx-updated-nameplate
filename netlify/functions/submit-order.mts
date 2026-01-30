@@ -136,9 +136,32 @@ export default async (req: Request) => {
     doc.setFontSize(10);
     doc.setFont("helvetica", "normal");
     doc.text(`Page 1 of 1`, pageWidth - margin, y, { align: "right" });
-    y += 15;
+    y += 12;
+
+    // Contact info - NOW AT THE TOP
+    if (contactName || contactEmail) {
+      doc.setFillColor(248, 248, 248);
+      doc.roundedRect(margin, y, pageWidth - margin * 2, 20, 3, 3, "F");
+      doc.setFontSize(10);
+      doc.setFont("helvetica", "bold");
+      doc.setTextColor(0);
+      doc.text("Contact Information", margin + 5, y + 7);
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(9);
+      doc.setTextColor(100);
+      let contactX = margin + 5;
+      if (contactName) {
+        doc.text(`Name: ${contactName}`, contactX, y + 14);
+        contactX += 60;
+      }
+      if (contactEmail) {
+        doc.text(`Email: ${contactEmail}`, contactX, y + 14);
+      }
+      y += 28;
+    }
 
     // Table header
+    doc.setTextColor(0);
     doc.setDrawColor(0);
     doc.setLineWidth(0.5);
     doc.line(margin, y, pageWidth - margin, y);
@@ -147,8 +170,8 @@ export default async (req: Request) => {
     doc.setFontSize(10);
     doc.setTextColor(100);
     doc.text("Preview", margin, y);
-    doc.text("Size/Name", margin + 45, y);
-    doc.text("Font", margin + 115, y);
+    doc.text("Size/Name", margin + 50, y);
+    doc.text("Font", margin + 120, y);
     doc.text("Qty", pageWidth - margin - 10, y, { align: "right" });
     y += 5;
     doc.line(margin, y, pageWidth - margin, y);
@@ -157,68 +180,100 @@ export default async (req: Request) => {
     // Table rows
     doc.setTextColor(0);
     for (const label of labels) {
-      const texts = (label.textLines || []).filter((t: any) => t.text).map((t: any) => t.text);
-      const primary = texts[0] || "—";
+      const texts = (label.textLines || []).filter((t: any) => t.text);
+      const primary = texts[0]?.text || "—";
       
       // Check if we need a new page
-      if (y > pageHeight - 40) {
+      if (y > pageHeight - 50) {
         doc.addPage();
         y = margin;
       }
 
-      // Draw label preview box
-      const boxWidth = 35;
-      const boxHeight = 20;
+      // Draw label preview box - scale to fit but maintain aspect ratio
+      const maxBoxWidth = 40;
+      const maxBoxHeight = 25;
+      const labelRatio = (label.width || 7) / (label.height || 2);
+      let boxWidth, boxHeight;
+      
+      if (labelRatio > maxBoxWidth / maxBoxHeight) {
+        boxWidth = maxBoxWidth;
+        boxHeight = maxBoxWidth / labelRatio;
+      } else {
+        boxHeight = maxBoxHeight;
+        boxWidth = maxBoxHeight * labelRatio;
+      }
+
       const labelColor = hexToRgb(label.labelColor || "#22c55e");
       const textColor = hexToRgb(label.textColor || "#ffffff");
       
+      const boxX = margin;
+      const boxY = y - 5;
+      
       doc.setFillColor(labelColor.r, labelColor.g, labelColor.b);
       if (label.corners === "rounded") {
-        doc.roundedRect(margin, y - 5, boxWidth, boxHeight, 3, 3, "F");
+        doc.roundedRect(boxX, boxY, boxWidth, boxHeight, 2, 2, "F");
       } else {
-        doc.rect(margin, y - 5, boxWidth, boxHeight, "F");
+        doc.rect(boxX, boxY, boxWidth, boxHeight, "F");
       }
       
-      // Text inside preview box
-      doc.setFontSize(6);
+      // Draw white outline if label is white
+      if (label.labelColor?.toUpperCase() === "#FFFFFF") {
+        doc.setDrawColor(200);
+        doc.setLineWidth(0.3);
+        if (label.corners === "rounded") {
+          doc.roundedRect(boxX, boxY, boxWidth, boxHeight, 2, 2, "S");
+        } else {
+          doc.rect(boxX, boxY, boxWidth, boxHeight, "S");
+        }
+      }
+      
+      // Text inside preview box - USE ACTUAL POSITIONS from the creator
       doc.setTextColor(textColor.r, textColor.g, textColor.b);
-      const previewTexts = texts.slice(0, 2);
-      previewTexts.forEach((t: string, i: number) => {
-        const truncated = t.length > 10 ? t.substring(0, 10) + "..." : t;
-        doc.text(truncated, margin + boxWidth / 2, y + 2 + (i * 5), { align: "center" });
-      });
+      
+      for (const textLine of texts) {
+        // Calculate position based on x, y percentages
+        const textX = boxX + (textLine.x / 100) * boxWidth;
+        const textY = boxY + (textLine.y / 100) * boxHeight;
+        
+        // Scale font size relative to box
+        const scaledFontSize = Math.max(4, Math.min(8, (textLine.fontSize || 20) * (boxHeight / 50)));
+        doc.setFontSize(scaledFontSize);
+        
+        const truncated = textLine.text.length > 12 ? textLine.text.substring(0, 12) + "..." : textLine.text;
+        doc.text(truncated, textX, textY, { align: "center" });
+      }
 
       // Size/Name column
       doc.setTextColor(0);
       doc.setFontSize(11);
       doc.setFont("helvetica", "bold");
-      const truncatedPrimary = primary.length > 25 ? primary.substring(0, 25) + "..." : primary;
-      doc.text(truncatedPrimary, margin + 45, y);
+      const truncatedPrimary = primary.length > 20 ? primary.substring(0, 20) + "..." : primary;
+      doc.text(truncatedPrimary, margin + 50, y);
       doc.setFont("helvetica", "normal");
       doc.setFontSize(9);
       doc.setTextColor(100);
-      doc.text(`${label.width}" × ${label.height}"`, margin + 45, y + 5);
+      doc.text(`${label.width}" × ${label.height}"`, margin + 50, y + 5);
       
       // Sticky back badge
       if (label.stickyBack) {
         doc.setFillColor(219, 234, 254);
-        doc.roundedRect(margin + 45, y + 7, 25, 5, 1, 1, "F");
+        doc.roundedRect(margin + 50, y + 8, 25, 5, 1, 1, "F");
         doc.setFontSize(6);
         doc.setTextColor(29, 78, 216);
-        doc.text("STICKY BACK", margin + 47, y + 10.5);
+        doc.text("STICKY BACK", margin + 52, y + 11.5);
       }
 
       // Font column
       doc.setTextColor(0);
       doc.setFontSize(10);
-      doc.text(label.font || "Calibri", margin + 115, y);
+      doc.text(label.font || "Calibri", margin + 120, y);
 
       // Qty column
       doc.setFont("helvetica", "bold");
       doc.text(`×${label.quantity || 1}`, pageWidth - margin - 10, y, { align: "right" });
       doc.setFont("helvetica", "normal");
 
-      y += boxHeight + 10;
+      y += Math.max(boxHeight, 20) + 10;
 
       // Divider line
       doc.setDrawColor(230);
@@ -231,26 +286,9 @@ export default async (req: Request) => {
     doc.setLineWidth(0.5);
     doc.line(margin, y - 5, pageWidth - margin, y - 5);
 
-    // Contact info
-    if (contactName || contactEmail) {
-      y += 10;
-      doc.setFillColor(248, 248, 248);
-      doc.roundedRect(margin, y - 5, pageWidth - margin * 2, 25, 3, 3, "F");
-      doc.setFontSize(10);
-      doc.setFont("helvetica", "bold");
-      doc.setTextColor(0);
-      doc.text("Contact Information", margin + 5, y + 3);
-      doc.setFont("helvetica", "normal");
-      doc.setFontSize(9);
-      doc.setTextColor(100);
-      if (contactName) doc.text(`Name: ${contactName}`, margin + 5, y + 10);
-      if (contactEmail) doc.text(`Email: ${contactEmail}`, margin + 5, y + 16);
-      y += 30;
-    }
-
-    // Notes
+    // Notes - at the bottom
     if (notes) {
-      y += 5;
+      y += 10;
       doc.setFillColor(255, 251, 235);
       const notesHeight = Math.max(20, Math.ceil(notes.length / 80) * 6 + 15);
       doc.roundedRect(margin, y - 5, pageWidth - margin * 2, notesHeight, 3, 3, "F");

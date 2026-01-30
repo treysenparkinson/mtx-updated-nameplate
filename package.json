@@ -4,7 +4,8 @@
   "type": "module",
   "dependencies": {
     "@aws-sdk/client-s3": "^3.490.0",
-    "xlsx": "^0.18.5"
+    "xlsx": "^0.18.5",
+    "jspdf": "^2.5.1"
   },
   "devDependencies": {
     "@netlify/functions": "^2.4.1",

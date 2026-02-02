@@ -171,11 +171,32 @@
     .toast.show { transform: translateY(0); opacity: 1; }
     .toast.success { background: #059669; }
     .toast.error { background: #dc2626; }
+
+    /* Mobile View Limiter */
+    .mobile-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 2000; }
+    .mobile-modal { background: white; border-radius: 16px; padding: 40px 32px; max-width: 400px; width: 90%; text-align: center; margin: 20px; }
+    .mobile-modal h2 { font-size: 24px; font-weight: 700; color: #1a365d; margin-bottom: 16px; }
+    .mobile-modal p { font-size: 15px; color: #64748b; line-height: 1.6; margin-bottom: 28px; }
+    .mobile-modal-btn { padding: 14px 32px; background: #1a365d; color: white; border: none; border-radius: 8px; font-size: 15px; font-weight: 600; font-family: 'Montserrat', sans-serif; cursor: pointer; transition: all 0.2s; }
+    .mobile-modal-btn:hover { background: #2d4a7c; }
+
+    @media (min-width: 1025px) {
+      .mobile-overlay { display: none; }
+    }
     .spinner { display: inline-block; width: 14px; height: 14px; border: 2px solid #ffffff; border-top-color: transparent; border-radius: 50%; animation: spin 0.8s linear infinite; margin-right: 8px; }
     @keyframes spin { to { transform: rotate(360deg); } }
   </style>
 </head>
 <body>
+  <!-- Mobile View Limiter -->
+  <div class="mobile-overlay" id="mobileOverlay">
+    <div class="mobile-modal">
+      <h2>Desktop View Required</h2>
+      <p>We apologize for the inconvenience. We are currently in development of making a mobile view. For now please enjoy creating using a desktop.</p>
+      <button class="mobile-modal-btn" onclick="window.location.href='https://www.matrixpci.com'">Go Home</button>
+    </div>
+  </div>
+
   <div class="container">
     <div class="main-grid">
       <div class="controls-column">
